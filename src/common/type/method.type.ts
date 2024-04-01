@@ -8,7 +8,7 @@ export type QueryType = {
 
 interface BaseMethodType {
   path: string;
-  credentials: boolean;
+  token: boolean;
   headers: HeadersInit;
 }
 

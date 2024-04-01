@@ -1,5 +1,3 @@
-import { FieldError } from '../type/form.type';
-
 export const SUSSCESS_MESSAGE = {};
 export const ERROR_MESSSAGE = {
   EA0001: 'Invalid email format',
@@ -98,6 +96,3 @@ export const TOAST_MESSAGE = {
   error: 'Error',
   info: 'Info',
 };
-
-export const FIELD_MESSAGE = (err: FieldError) =>
-  `${err.field} ${err.message ? 'is invalid!' : err.message}`;

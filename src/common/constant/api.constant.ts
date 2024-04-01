@@ -10,6 +10,7 @@ export const REQUEST_PATH = {
   },
   auth: {
     base: 'auth',
+    signup: () => `${REQUEST_PATH.auth.base}/signup`,
     login: () => `${REQUEST_PATH.auth.base}/login`,
     refresh: () => `${REQUEST_PATH.auth.base}/refresh`,
   },

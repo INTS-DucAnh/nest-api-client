@@ -1,22 +1,31 @@
-import { LoginForm } from '@/common/form';
 import { Route, Routes } from 'react-router-dom';
-import FormHolder from '../form';
+import AuthRoute from './auth.route';
 import PrivateRoute from './private.route';
+import PublicRoute from './public.route';
 
 export default function AppRouter() {
-  const onClose = () => {
-    console.log('Close');
-  };
   return (
     <Routes>
       <Route element={<PrivateRoute />}>
-        <Route path="/" element={<p>Welcome to Private route</p>} />
+        <Route path="admin">
+          <Route path="" element={<p>This is Admin Page</p>} />
+
+          <Route path="*" element={<p>Page not found</p>} />
+        </Route>
       </Route>
-      <Route></Route>
-      <Route
-        path="*"
-        element={<FormHolder form={LoginForm} onClose={onClose} />}
-      />
+      <Route element={<PublicRoute />}>
+        <Route path="" element={<p>Public Dashboard</p>} />
+        <Route path="posts">
+          <Route path="" element={<p>Post list</p>} />
+          <Route path=":id" element={<p>Post Detail</p>} />
+        </Route>
+
+        <Route path="*" element={<p>Page not found</p>} />
+      </Route>
+      <Route element={<AuthRoute />}>
+        <Route path="login" element={<p>This is Login</p>} />
+        <Route path="signup" element={<p>This is Signup</p>} />
+      </Route>
     </Routes>
   );
 }

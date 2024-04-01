@@ -33,6 +33,7 @@ export default function useRequest() {
       path: params.path,
       data: params.body,
       formData: params.formData,
+      headers: params.headers,
     });
   };
 
@@ -85,15 +86,17 @@ export default function useRequest() {
       });
 
       const dataRes: ResponseRequest = await req.json();
-
       if (!req.ok) {
         if (dataRes.code === ErrorCodeEnum.TOKEN_REQUIRED) {
           await RefreshToken();
           await BaseRequest({ method, path, data, formData, ...options });
         }
-        console.log(ERROR_MESSSAGE[dataRes.code]);
+        toast({
+          variant: 'destructive',
+          title: 'Uh oh! Something went wrong!',
+          description: ERROR_MESSSAGE[dataRes.code],
+        });
       }
-
       return dataRes;
     } catch (err) {
       toast({

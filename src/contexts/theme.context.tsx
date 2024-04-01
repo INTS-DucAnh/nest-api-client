@@ -8,7 +8,7 @@ export interface ThemeContextType {
 
 export const ThemeContext = createContext<ThemeContextType>({
   theme: ThemeEnum.LIGHT,
-  changeTheme: () => null,
+  changeTheme: (theme: ThemeEnum) => null,
 });
 
 export default function ThemeProvider({ children }: { children: ReactNode }) {
@@ -18,8 +18,13 @@ export default function ThemeProvider({ children }: { children: ReactNode }) {
     SetTheme(theme);
   };
 
+  const contextValue: ThemeContextType = {
+    theme: theme,
+    changeTheme: changeTheme,
+  };
+
   return (
-    <ThemeContext.Provider value={{ theme, changeTheme }}>
+    <ThemeContext.Provider value={contextValue}>
       {children}
     </ThemeContext.Provider>
   );
