@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Form, FormField } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { Separator } from '@/components/ui/separator';
+import { useToast } from '@/components/ui/use-toast';
 import useRequest from '@/hooks/useRequestApi.hook';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
@@ -13,6 +14,7 @@ import * as z from 'zod';
 
 export default function LoginForm() {
   const { post } = useRequest();
+  const { toast } = useToast();
   const form = useForm<z.infer<typeof LoginFormSchema>>({
     resolver: zodResolver(LoginFormSchema),
     defaultValues: {
@@ -22,7 +24,7 @@ export default function LoginForm() {
   });
 
   const onSubmit = async (data: z.infer<typeof LoginFormSchema>) => {
-    post({
+    const res = await post({
       path: REQUEST_PATH.auth.login(),
       headers: {
         'Content-type': 'application/json',
@@ -30,12 +32,18 @@ export default function LoginForm() {
       body: data,
       token: false,
     });
+    if (res) {
+      toast({
+        title: 'Successfully',
+        description: 'Login successfully',
+      });
+    }
   };
   return (
     <Form {...form}>
       <Separator />
       <form onSubmit={form.handleSubmit(onSubmit)} className="mt-5">
-        <div className="flex flex-col gap-3">
+        <div className="flex flex-col gap-3 text-left">
           <FormField
             control={form.control}
             name="email"
@@ -63,10 +71,10 @@ export default function LoginForm() {
         <Button type="submit" className="w-full mt-5">
           Login
         </Button>
-        <Separator className="mt-3 mb-1" />
+        <Separator className="mt-3 mb-3" />
         <p className="text-sm w-full text-center m-0">
           Don't have an account?{' '}
-          <Link to={'/signup'} className="text-primary">
+          <Link to={'/signup'} className="text-primary hover:underline">
             Create an account
           </Link>
         </p>

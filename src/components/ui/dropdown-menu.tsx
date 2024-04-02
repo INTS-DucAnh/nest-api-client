@@ -8,6 +8,37 @@ import * as React from 'react';
 
 import { cn } from '@/lib/utils';
 
+export function DropdownMenuComponent({
+  className,
+  trigger,
+  groups,
+  title,
+}: {
+  className?: string;
+  title: string;
+  trigger: React.ReactNode;
+  groups?: React.ReactNode;
+}) {
+  return (
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>{trigger}</DropdownMenuTrigger>
+      <DropdownMenuContent className={className}>
+        <DropdownMenuLabel>{title}</DropdownMenuLabel>
+        <DropdownMenuSeparator />
+        {groups}
+      </DropdownMenuContent>
+    </DropdownMenu>
+  );
+}
+
+export function DropdownGroupComponent({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+  return <DropdownMenuGroup>{children}</DropdownMenuGroup>;
+}
+
 const DropdownMenu = DropdownMenuPrimitive.Root;
 
 const DropdownMenuTrigger = DropdownMenuPrimitive.Trigger;
@@ -85,7 +116,7 @@ const DropdownMenuItem = React.forwardRef<
   <DropdownMenuPrimitive.Item
     ref={ref}
     className={cn(
-      'relative flex cursor-default select-none items-center rounded-sm px-2 py-1.5 text-sm outline-none transition-colors focus:bg-accent focus:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50',
+      'relative flex cursor-default select-none items-center rounded-sm px-2 py-1.5 text-sm outline-none transition-colors focus:bg-accent focus:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50 ',
       inset && 'pl-8',
       className,
     )}

@@ -17,7 +17,7 @@ export default function DialogComponent({
   trigger: ReactNode;
   title: string;
   description?: string;
-  children: ReactNode;
+  children?: ReactNode;
 }) {
   return (
     <Dialog>

@@ -5,6 +5,31 @@ import * as React from 'react';
 
 import { cn } from '@/lib/utils';
 
+export default function SheetComponent({
+  trigger,
+  title,
+  description,
+  children,
+}: {
+  title: string;
+  description?: string;
+  trigger: React.ReactNode;
+  children: React.ReactNode;
+}) {
+  return (
+    <Sheet>
+      <SheetTrigger>{trigger}</SheetTrigger>
+      <SheetContent>
+        <SheetHeader>
+          <SheetTitle>{title}</SheetTitle>
+          {description && <SheetDescription>{description}</SheetDescription>}
+        </SheetHeader>
+        {children}
+      </SheetContent>
+    </Sheet>
+  );
+}
+
 const Sheet = SheetPrimitive.Root;
 
 const SheetTrigger = SheetPrimitive.Trigger;

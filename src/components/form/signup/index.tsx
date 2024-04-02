@@ -1,5 +1,4 @@
 import { REQUEST_PATH } from '@/common/constant/api.constant';
-import { LoginFormSchema } from '@/common/schema/login.schema';
 import { SignupFormSchema } from '@/common/schema/signup.schema';
 import RenderFormItem from '@/components/form-item';
 import { Button } from '@/components/ui/button';
@@ -24,7 +23,7 @@ export default function SignupForm() {
     },
   });
 
-  const onSubmit = async (data: z.infer<typeof LoginFormSchema>) => {
+  const onSubmit = async (data: z.infer<typeof SignupFormSchema>) => {
     post({
       path: REQUEST_PATH.auth.signup(),
       headers: {
@@ -39,12 +38,12 @@ export default function SignupForm() {
     <Form {...form}>
       <Separator />
       <form onSubmit={form.handleSubmit(onSubmit)} className="mt-5">
-        <div className="flex flex-col gap-3">
+        <div className="flex flex-col gap-3 text-left">
           <FormField
             control={form.control}
             name="name"
             render={({ field }) => (
-              <RenderFormItem label="Fullname">
+              <RenderFormItem label="Fullname" require>
                 <Input placeholder="Fullname" {...field} />
               </RenderFormItem>
             )}
@@ -53,7 +52,7 @@ export default function SignupForm() {
             control={form.control}
             name="email"
             render={({ field }) => (
-              <RenderFormItem label="Email">
+              <RenderFormItem label="Email" require>
                 <Input placeholder="Email" {...field} />
               </RenderFormItem>
             )}
@@ -62,7 +61,7 @@ export default function SignupForm() {
             control={form.control}
             name="age"
             render={({ field }) => (
-              <RenderFormItem label="Age">
+              <RenderFormItem label="Age" require>
                 <Input placeholder="Age" type="number" {...field} />
               </RenderFormItem>
             )}
@@ -71,7 +70,7 @@ export default function SignupForm() {
             control={form.control}
             name="password"
             render={({ field }) => (
-              <RenderFormItem label="Password">
+              <RenderFormItem label="Password" require>
                 <Input placeholder="Password" type="password" {...field} />
               </RenderFormItem>
             )}
@@ -81,10 +80,17 @@ export default function SignupForm() {
         <Button type="submit" className="w-full mt-5">
           Signup
         </Button>
-        <Separator className="mt-3 mb-1" />
+        <p className="text-xs w-full text-right my-2">
+          <Link
+            to={'/forgot-password'}
+            className="text-primary hover:underline">
+            Forgot password?
+          </Link>
+        </p>
+        <Separator className="mt-3 mb-3" />
         <p className="text-sm w-full text-center m-0">
           Have an account?{' '}
-          <Link to={'/login'} className="text-primary">
+          <Link to={'/login'} className="text-primary hover:underline">
             Login
           </Link>
         </p>

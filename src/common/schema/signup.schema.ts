@@ -5,17 +5,13 @@ export const SignupFormSchema = z.object({
   name: z
     .string()
     .min(5, { message: 'Fullname must be at least 5 characters. ' }),
-  age: z.preprocess(
-    (a) => parseInt(z.string().parse(a), 10),
-    z
-      .number()
-      .int()
-      .positive()
-      .min(18, { message: 'You must be 18 year old to signup.' })
-      .max(100, { message: '100 year old is maximum.' }),
-  ),
+  age: z.coerce
+    .number()
+    .int()
+    .gte(18, { message: 'You must be 18 year old to signup.' }),
   email: z
     .string()
+    .min(1, { message: 'Email must be provide' })
     .email('Email must be in email format. \nEx: example@gmail.com. '),
   password: z
     .string()

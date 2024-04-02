@@ -7,3 +7,5 @@ export type UserType = {
   avatar: string | null;
   role: RoleUserEnum;
 };
+
+// export type UserLogin = {};

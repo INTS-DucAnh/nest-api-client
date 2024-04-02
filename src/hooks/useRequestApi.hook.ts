@@ -86,6 +86,7 @@ export default function useRequest() {
       });
 
       const dataRes: ResponseRequest = await req.json();
+
       if (!req.ok) {
         if (dataRes.code === ErrorCodeEnum.TOKEN_REQUIRED) {
           await RefreshToken();
@@ -94,9 +95,12 @@ export default function useRequest() {
         toast({
           variant: 'destructive',
           title: 'Uh oh! Something went wrong!',
-          description: ERROR_MESSSAGE[dataRes.code],
+          // description: `${ERROR_MESSSAGE[dataRes.code]}`,
+          description: `${dataRes.message}`,
         });
+        return false;
       }
+
       return dataRes;
     } catch (err) {
       toast({

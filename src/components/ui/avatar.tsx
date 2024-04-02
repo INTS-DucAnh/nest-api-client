@@ -3,6 +3,25 @@ import * as React from 'react';
 
 import { cn } from '@/lib/utils';
 
+export default function AvatarComponet({
+  src,
+  fallback,
+  alt,
+  className,
+}: {
+  alt?: string;
+  src: string;
+  fallback: React.ReactNode;
+  className?: string;
+}) {
+  return (
+    <Avatar>
+      <AvatarImage src={src} alt={alt || '@shadcn'} />
+      <AvatarFallback className={className}>{fallback}</AvatarFallback>
+    </Avatar>
+  );
+}
+
 const Avatar = React.forwardRef<
   React.ElementRef<typeof AvatarPrimitive.Root>,
   React.ComponentPropsWithoutRef<typeof AvatarPrimitive.Root>
