@@ -1,97 +1,32 @@
-import { TagType } from '@/common/type/tag.type';
+import { TagFindItemType } from '@/common/type/tag.type';
 import DialogCreateTag from '@/components/dialog-tag/create';
-import DialogUpdateTag from '@/components/dialog-tag/update';
 import { Button } from '@/components/ui/button';
 import CardComponent, { CardContent, CardFooter } from '@/components/ui/card';
-import { Checkbox } from '@/components/ui/checkbox';
-import { DataTable } from '@/components/ui/table';
 import TabsComponent, { TabsContent, TabsLists } from '@/components/ui/tabs';
-import { ColumnDef } from '@tanstack/react-table';
 import { TagIcon } from 'lucide-react';
 import { useEffect, useState } from 'react';
-import DialogDeleteTag from '../../../components/dialog-tag/delete';
 import useRequest from '@/hooks/useRequestApi.hook';
-import { REQUEST_HOST, REQUEST_PATH } from '@/common/constant/api.constant';
+import { REQUEST_PATH } from '@/common/constant/api.constant';
+import { FindTagResult } from '@/common/type/result.type';
+import useTableState, {TableState} from '@/hooks/useTableState.hook';
+import TagTable from '@/components/table/tag';
+import FetchingData from '@/components/loading/fetching';
 
-export const columns: ColumnDef<TagType>[] = [
-  {
-    id: 'select',
-    header: ({ table }) => (
-      <Checkbox
-        checked={
-          table.getIsAllPageRowsSelected() ||
-          (table.getIsSomePageRowsSelected() && 'indeterminate')
-        }
-        onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
-        aria-label="Select all"
-      />
-    ),
-    cell: ({ row }) => (
-      <Checkbox
-        checked={row.getIsSelected()}
-        onCheckedChange={(value) => row.toggleSelected(!!value)}
-        aria-label="Select row"
-      />
-    ),
-    enableSorting: false,
-    enableHiding: false,
-  },
-  {
-    accessorKey: 'name',
-    header: 'Name',
-  },
-  {
-    accessorKey: 'userCreate',
-    header: 'Created By',
-  },
-  {
-    accessorKey: 'createAt',
-    header: 'Created At',
-  },
-  {
-    accessorKey: 'userUpdate',
-    header: 'Update By',
-  },
-  {
-    accessorKey: 'updateAt',
-    header: 'Update At',
-  },
-  {
-    id: 'actions',
-    header: 'Actions',
-    enableHiding: false,
-    cell: ({ row }) => {
-      const tag = row.original;
-      return (
-        <div>
-          <DialogUpdateTag
-            trigger={<Button variant="outline">Edit</Button>}
-            tag={tag}
-          />
-          <DialogDeleteTag
-            tag={tag}
-            trigger={
-              <Button variant="destructive" className="ml-2">
-                Delete
-              </Button>
-            }
-          />
-        </div>
-      );
-    },
-  },
-];
+export interface TagTableState extends TableState {
+  data: TagFindItemType[],
+  name: string,
+}
 
 export default function TagRoute() {
-  const [data, SetData] = useState<TagType[]>([
-    { name: 'abc' },
-    { name: 'bcd' },
-  ]);
   const { get } = useRequest();
-  const [page, SetPage] = useState(1);
-  const [size, SetSize] = useState(10);
-  const [total, SetTotal] = useState();
-  const [key, SetKey] = useState('');
+  const { state , SetTableState} = useTableState<TagTableState>({
+    data: [],
+    fetching: true, 
+    page: 1,
+    size: 10,
+    total: 0,
+    name: '',
+  })
 
   const tabs: TabsLists[] = [
     {
@@ -101,15 +36,32 @@ export default function TagRoute() {
   ];
 
   const getTagList = async () => {
-    await get({
-      path: `${REQUEST_HOST}/${REQUEST_PATH.tag}/`,
-      // query: [{}]
+    SetTableState({
+      fetching: true,
+    })
+    const res = await get<FindTagResult>({
+      path: REQUEST_PATH.tag.find(),
+      query: [
+        {key: 'page', value: state.page},
+        {key: 'size', value: state.size},
+        {key: 'name', value: state.name},
+      ],
+      token: true,
     });
+
+    if(res) {
+      SetTableState({
+        data: res.result.data,
+        total: res.result.total || 0,
+        fetching: false,
+      })
+    }
   };
 
   useEffect(() => {
     getTagList();
-  }, [page]);
+  }, [state.page]);
+
 
   return (
     <TabsComponent
@@ -125,13 +77,18 @@ export default function TagRoute() {
           }
         />
       }>
-      <TabsContent value={tabs[0].value}>
+
+      <TabsContent value={tabs[0].value} className='relative'>
         <CardComponent
           title="Tag Lists"
           description="Manage your tag and view your tag.">
+          
           <CardContent>
-            {data ? (
-              <DataTable columns={columns} data={data} />
+            {
+              state.fetching && <FetchingData />
+            }
+            {state.data ? (
+              <TagTable tags={state.data}/>
             ) : (
               <div className="flex flex-1 items-center justify-center rounded-lg border border-dashed shadow-sm py-32">
                 <div className="flex flex-col items-center gap-1 text-center">
@@ -154,17 +111,20 @@ export default function TagRoute() {
               </div>
             )}
           </CardContent>
+          
           <CardFooter>
             <div className="text-xs text-muted-foreground">
               Showing{' '}
               <strong>
-                {(page - 1) * size + 1}-{page * size}
+                {(state.page - 1) * state.size + 1}-{state.page * state.size}
               </strong>{' '}
               of <strong>{0}</strong> products
             </div>
           </CardFooter>
+        
         </CardComponent>
       </TabsContent>
+
     </TabsComponent>
   );
 }

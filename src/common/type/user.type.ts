@@ -23,9 +23,7 @@ export type UserLogin = {
 };
 
 export type FindUserByEmail = {
-  role: RoleUserEnum,
   name: string,
-  birthDay: Date | null,
   id: string,
   email: string,
   avatar: string | null,
@@ -33,6 +31,12 @@ export type FindUserByEmail = {
 
 export type SendOTPUser = {
   expired: number;
+}
+
+export type UserModifyBase = {
+  id: string,
+  name: string,
+  avatar: string | null
 }
 
 // export type UserLogin = {};

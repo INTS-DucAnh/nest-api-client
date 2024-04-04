@@ -1,6 +1,8 @@
 import { REQUEST_PATH } from '@/common/constant/api.constant';
 import { TagFormSchema } from '@/common/schema/create-tag.schema';
-import { TagEditType } from '@/common/type/tag.type';
+import { FormMethodType } from '@/common/type/form.type';
+import { UpdateTagResult } from '@/common/type/result.type';
+import { TagEditType, TagFindItemType } from '@/common/type/tag.type';
 import RenderFormItem from '@/components/form-item';
 import { Button } from '@/components/ui/button';
 import { DialogClose, DialogFooter } from '@/components/ui/dialog';
@@ -14,8 +16,20 @@ import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import * as z from 'zod';
 
-export default function TagForm({ tag }: { tag?: TagEditType }) {
-  const { post } = useRequest();
+const TextForm = {
+  update: {
+    confirm: 'Update',
+    updating: 'Updating Tag',
+  },
+  create: {
+    confirm: 'Create',
+    updating: 'Creating Tag',
+  },
+}
+
+export default function TagForm({ tag }: { tag?: TagFindItemType }) {
+  const { post, put } = useRequest();
+  const [type, SetType] = useState<FormMethodType>(tag ? 'update' : 'create');
   const form = useForm<z.infer<typeof TagFormSchema>>({
     resolver: zodResolver(TagFormSchema),
     defaultValues: {
@@ -24,16 +38,31 @@ export default function TagForm({ tag }: { tag?: TagEditType }) {
   });
   const [loading, SetLoading] = useState<boolean>(false);
 
+  const defMethod = () => tag ? put : post;
+
   const onSubmit = async (data: z.infer<typeof TagFormSchema>) => {
     SetLoading(true);
-    const res = await post({
-      path: tag ? REQUEST_PATH.tag.base : REQUEST_PATH.tag.base,
+
+    const method = defMethod();
+
+    const res = await method<UpdateTagResult>({
+      path: !tag ? REQUEST_PATH.tag.create() : REQUEST_PATH.tag.update(),
       headers: {
-        'Content-type': 'application/json',
+        'Content-Type': 'application/json',
       },
-      body: data,
+      body: 
+      !tag ? 
+        data : 
+        ({
+          ...data,
+          id: tag.id,
+        }),
+      token: true,
     });
     SetLoading(false);
+    // if(res ) {
+
+    // }
   };
 
   return (
@@ -57,7 +86,7 @@ export default function TagForm({ tag }: { tag?: TagEditType }) {
               Close
             </Button>
           </DialogClose>
-
+          
           <Button
             disabled={loading}
             type="submit"
@@ -65,10 +94,10 @@ export default function TagForm({ tag }: { tag?: TagEditType }) {
             {loading ? (
               <>
                 <ReloadIcon className="mr-2 h-4 w-4 animate-spin" />{' '}
-                <p>Creating tag</p>
+                <p>{TextForm[type].updating}</p>
               </>
             ) : (
-              <p>Create</p>
+              <p>{TextForm[type].confirm}</p>
             )}
           </Button>
         </DialogFooter>

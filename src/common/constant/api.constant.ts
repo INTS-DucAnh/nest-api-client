@@ -10,6 +10,8 @@ export const REQUEST_PATH = {
     getByEmail: () => `${REQUEST_PATH.user.base}/email`,
     sendOTP: () => `${REQUEST_PATH.user.base}/random-code`,
     signup: () => `${REQUEST_PATH.user.base}/sign-up`,
+    checkOTP: () => `${REQUEST_PATH.user.base}/check-code`,
+    resetPass: () => `${REQUEST_PATH.user.base}/reset-password`,
   },
   auth: {
     base: 'auth',
@@ -22,6 +24,11 @@ export const REQUEST_PATH = {
   },
   tag: {
     base: 'tags',
+    find: () => `${REQUEST_PATH.tag.base}`,
+    create: () => `${REQUEST_PATH.tag.base}`,
+    update: () => `${REQUEST_PATH.tag.base}`,
+    deleteOne: () => `${REQUEST_PATH.tag.base}`,
+    deleteMutiple: () => `${REQUEST_PATH.tag.base}/mutiple`,
   },
   category: {
     base: 'category',

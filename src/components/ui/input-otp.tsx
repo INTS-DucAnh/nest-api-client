@@ -4,11 +4,14 @@ import { DashIcon } from '@radix-ui/react-icons';
 import { cn } from '@/lib/utils';
 import { OTPInput, OTPInputContext, REGEXP_ONLY_DIGITS } from 'input-otp';
 
-export default function InputOTPComponent()  {
+export default function InputOTPComponent({onChange, disabled, value}: {onChange: (value: string) => void, disabled: boolean, value: string})  {
   return (
     <InputOTP
       maxLength={6}
       pattern={REGEXP_ONLY_DIGITS}
+      onChange={onChange}
+      disabled={disabled}
+      value={value}
     >
       <InputOTPGroup>
         <InputOTPSlot index={0} />

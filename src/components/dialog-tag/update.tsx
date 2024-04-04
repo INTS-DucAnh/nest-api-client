@@ -1,4 +1,4 @@
-import { TagType } from '@/common/type/tag.type';
+import { TagFindItemType, TagType } from '@/common/type/tag.type';
 import { ReactNode } from 'react';
 import TagForm from '../form/tag';
 import SheetComponent from '../ui/sheet';
@@ -7,7 +7,7 @@ export default function DialogUpdateTag({
   trigger,
   tag,
 }: {
-  tag: TagType;
+  tag: TagFindItemType;
   trigger: ReactNode;
 }) {
   return (

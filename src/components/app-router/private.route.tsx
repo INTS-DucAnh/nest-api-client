@@ -11,7 +11,7 @@ export default function PrivateRoute() {
   const { GetToken } = useAccessToken();
   const { user } = useContext<UserContextType>(UserContext);
 
-  if (!GetToken() && user && user.role === RoleUserEnum.USER) return <Navigate to={'/'} />;
+  if (!GetToken() || user && user.role === RoleUserEnum.USER) return <Navigate to={'/'} />;
 
   return (
     <main className="w-full h-full flex">

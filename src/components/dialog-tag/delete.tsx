@@ -1,9 +1,8 @@
 import { REQUEST_HOST, REQUEST_PATH } from '@/common/constant/api.constant';
-import { TagType } from '@/common/type/tag.type';
+import { TagFindItemType, TagType } from '@/common/type/tag.type';
 import DialogComponent from '@/components/dialog';
 import { Button } from '@/components/ui/button';
 import { DialogClose, DialogFooter } from '@/components/ui/dialog';
-import { Separator } from '@/components/ui/separator';
 import useRequest from '@/hooks/useRequestApi.hook';
 import { ReactNode } from 'react';
 
@@ -11,7 +10,7 @@ export default function DialogDeleteTag({
   tag,
   trigger,
 }: {
-  tag?: TagType;
+  tag?: TagFindItemType;
   trigger: ReactNode;
 }) {
   const { del } = useRequest();

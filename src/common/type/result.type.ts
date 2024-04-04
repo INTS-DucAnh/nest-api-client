@@ -1,4 +1,5 @@
 import { ResponseRequest } from './method.type';
+import { TagFindItemType, TagFindType } from './tag.type';
 import { FindUserByEmail, SendOTPUser, UserLogin } from './user.type';
 
 export interface LoginResult extends ResponseRequest {
@@ -10,11 +11,25 @@ export interface RefreshResult extends ResponseRequest {
 };
 
 export interface FindUserByEmailResult extends ResponseRequest {
-  result: {
-    users: FindUserByEmail[]
-  }
+  result: FindUserByEmail[]
 }
 
 export interface SendOTPResult extends ResponseRequest {
-  result: SendOTPUser
+  result: SendOTPUser;
+}
+
+export interface CheckOTPResult extends ResponseRequest {
+  result: string;
+}
+
+export interface ResetPasswordResult extends ResponseRequest {
+  result: string;
+}
+
+export interface FindTagResult extends ResponseRequest {
+  result: TagFindType;
+}
+
+export interface UpdateTagResult extends ResponseRequest {
+  result: TagFindItemType;
 }

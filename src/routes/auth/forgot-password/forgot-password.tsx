@@ -5,6 +5,9 @@ import ToolTip from '@/components/ui/tooltip';
 import { KeyRoundIcon, LockKeyholeIcon, MailIcon } from 'lucide-react';
 import EmailSelectStage from './stage-1';
 import OTPValidationStage from './stage-2';
+import { useToast } from '@/components/ui/use-toast';
+import { useNavigate } from 'react-router-dom';
+import ResetPasswordStage from './stage-3';
 
 type Stage = {
   stage: number,
@@ -15,11 +18,10 @@ type Stage = {
   component: React.FC<{className: string, onSuccess: () => void}>
 }
 
-
 const stages: Stage[] = [
   {
     stage: 1,
-    tooltip: 'Enter your email',
+    tooltip: 'Enter your Email',
     content: ({className}: {className: string}) => {
       return <MailIcon className={className}/>;
     },   
@@ -35,26 +37,28 @@ const stages: Stage[] = [
       return <LockKeyholeIcon className={className}/>;
     }, 
     title: 'OTP Validation',
-    description: 'OTP have been sent to your email, please check and type 6 digits to form bellow',
+    description: 'OTP have been sent to your email, please check and type 6 digits into form bellow',
     component: ({className, onSuccess}: {className: string, onSuccess: () => void}) => 
       <OTPValidationStage className={className} onSuccess={onSuccess}/>,
   },
   {
     stage: 3,
-    tooltip: 'Reset password',
+    tooltip: 'Reset Password',
     content: ({className}: {className: string}) => {
       return <KeyRoundIcon className={className}/>;
     }, 
-    title: 'string',
-    description: 'string',
+    title: 'Reset Passowrd',
+    description: 'Type new password and confirm password, make sure new password match with confrm password to reset your password.',
     component: ({className, onSuccess}: {className: string, onSuccess: () => void}) => 
-      <EmailSelectStage className={className} onSuccess={onSuccess}/>,
+      <ResetPasswordStage className={className} onSuccess={onSuccess}/>,
   },
 ]
 
 export default function ForgotPasswordRoute() {
+  const {toast} = useToast();
+  const navigate = useNavigate();
   const [currStage, SetCurrStage] = useState<number>(1); 
-  const [dir, SetDir] = useState<number>(1);
+  const [dir, SetDir] = useState<number>(-1);
 
   return(
     <section className='w-fit h-full py-16 mx-auto overflow-hidden flex flex-col items-center'>
@@ -67,7 +71,7 @@ export default function ForgotPasswordRoute() {
             <ToolTip 
               trigger={
               <Button 
-                disabled={stage.stage !== currStage}
+                disabled={stage.stage > currStage}
                 variant={currStage === stage.stage ? 'default' :'outline'}
                 size='icon' 
                 onClick={() => {
@@ -96,7 +100,13 @@ export default function ForgotPasswordRoute() {
         description={stages[currStage-1].description}
         Component={stages[currStage-1].component}
         onSuccess={() => {
-          SetCurrStage(curr => curr+1)
+          if(currStage !== stages.length) {
+            SetDir(currStage - stages[currStage].stage)
+            SetCurrStage(curr => curr+1)
+          } 
+          else {
+            navigate('/login');
+          }
         }}/>
       </div>
     </section>

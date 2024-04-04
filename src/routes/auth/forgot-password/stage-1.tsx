@@ -18,7 +18,7 @@ import { TypeFlags } from 'typescript';
 export default function EmailSelectStage({className, onSuccess} :  {className: string, onSuccess: ()=> void}) {
   const {data, changeData} = useContext<ForgotPasswordContextType>(ForgotPasswordContext);
   const [listSuggest, SetListSuggest] = useState<FindUserByEmail[]>([]);
-  const [email, SetEmail] = useState<string>('');
+  const [email, SetEmail] = useState<string>(data.email);
   const [delay, SetDelay] = useState<number>(500);
   const [openSugg, SetOpenSugg] = useState<boolean>(false);
   const [loadingSugg, SetLoadingSugg] = useState<boolean>(false);
@@ -45,18 +45,24 @@ export default function EmailSelectStage({className, onSuccess} :  {className: s
   }
 
   const sendOtp = async () => {
+    SetLoadingSend(true);
     const res = await post<SendOTPResult>({
       path: REQUEST_PATH.user.sendOTP(),
       body: {
         email: email,
       },
+      headers: {
+        'Content-Type': 'application/json',
+      },
     })
+    SetLoadingSend(false);
     if(res && typeof res !== 'boolean') {
       toast({
-        title: 'Send OTP xuccessfully',
+        title: 'Send OTP successfully',
         description: 'OTP have been sent to your email',
       });
       changeData('otpExpire', res.result.expired);
+      changeData('otp', '');
       onSuccess();
     }
 
@@ -73,7 +79,7 @@ export default function EmailSelectStage({className, onSuccess} :  {className: s
 
     SetLoadingSugg(false);
     if(res && typeof res !== 'boolean') {
-      SetListSuggest(res.result.users);
+      SetListSuggest(res.result);
     }
     else {
       SetListSuggest([]);
@@ -110,16 +116,21 @@ export default function EmailSelectStage({className, onSuccess} :  {className: s
         onChange={handleChangeEmail} 
         value={email} 
         autoComplete='off'
-        className='mt-2'/>    
+        className='mt-2'
+        />    
         {email && 
           !ValidEmailFormat(email) && 
           <p className='text-xs text-destructive mt-2'>Email is not valid format. <br/> Ex: example@gmail.com</p>}    
     </div>
     <div className='w-fit mt-3 flex gap-3 items-center'>
-      <Button onClick={sendOtp} disabled={ !ValidEmailFormat(email) }>
+      <Button 
+        onClick={sendOtp} 
+        disabled={ loadingSend || !ValidEmailFormat(email) } 
+        variant={loadingSend ? 'outline' : 'default'}
+      >
         {
-          loadingSend ? (<><LoaderCircleIcon className='w-3 h-3'/> Sending OTP to {email}</>):
-        (<p>Send OTP</p>)
+          loadingSend ? (<><LoaderCircleIcon className='w-3 h-3 animate-spin mr-2'/> Sending OTP to {email}</>):
+          (<p>Send OTP</p>)
         }
       </Button>
     </div>

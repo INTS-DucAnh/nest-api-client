@@ -4,11 +4,10 @@ export type ForgotData = {
   otp: string,
   email: string,
   password: string,
-  cfPassword: string,
   otpExpire: number,
 }
 
-export type ForgotField = 'otp' | 'email' | 'password' | 'cfPassword' | 'otpExpire';
+export type ForgotField = 'otp' | 'email' | 'password' | 'otpExpire';
 
 export type ForgotPasswordContextType = {
   data: ForgotData,
@@ -20,7 +19,6 @@ export const ForgotPasswordContext = createContext<ForgotPasswordContextType>({
     otp: '',
     email: '',
     password: '',
-    cfPassword: '',
     otpExpire: 0,
   },
   changeData: (key: ForgotField, value: string | number )=> null,
@@ -31,7 +29,6 @@ export default function ForgotPasswordProvider({children}: {children: ReactNode}
     otp: '',
     email: '',
     password: '',
-    cfPassword: '',
     otpExpire: 0,
   });
 

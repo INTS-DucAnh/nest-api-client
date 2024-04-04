@@ -10,6 +10,7 @@ interface BaseMethodType {
   path: string;
   headers?: HeadersInit;
   log?:boolean;
+  token?:boolean;
 }
 
 export interface GetMethodType extends BaseMethodType {
@@ -47,4 +48,5 @@ export interface RequestOption extends RequestInit {
   path: string;
   data?: object;
   formData?: FormData;
+  token?:boolean;
 }
