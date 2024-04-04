@@ -107,76 +107,78 @@ export default function EmailSelectStage({className, onSuccess} :  {className: s
   }, [email]);
 
   return (
-  <div className={`${className} relative flex flex-col items-end`}>
-    <div className='w-full'>
-      <Label htmlFor='email'>Email</Label>
-      <Input 
-        id='email'
-        placeholder='Email' 
-        onChange={handleChangeEmail} 
-        value={email} 
-        autoComplete='off'
-        className='mt-2'
-        />    
-        {email && 
-          !ValidEmailFormat(email) && 
-          <p className='text-xs text-destructive mt-2'>Email is not valid format. <br/> Ex: example@gmail.com</p>}    
-    </div>
-    <div className='w-fit mt-3 flex gap-3 items-center'>
+  <div className={`${className} relative flex flex-col items-start`}>
+    <div className='flex w-full items-center flex-1 gap-2' >
+      <div className='flex-1'>
+        <Input 
+          placeholder='Email' 
+          onChange={handleChangeEmail} 
+          value={email} 
+          autoComplete='off'
+          className='w-full'
+          />     
+          
+        {openSugg && 
+          <Card ref={suggRef} className='w-full h-fit p-3 absolute top-10 z-10'>
+            <ScrollArea className='w-full max-h-96 h-fit'>
+            {
+              !loadingSugg ?
+                (listSuggest.length !== 0 ? 
+                  listSuggest.map(sugg => (
+                    <Button 
+                      key={sugg.id} 
+                      variant='ghost' 
+                      className='w-full p-2 box-content justify-start gap-2 text-muted-foreground hover:text-foreground'
+                      onClick={() => {
+                        SetOpenSugg(false);
+                        SetEmail(sugg.email);
+                        changeData('email', sugg.email);
+                      }}
+                    >
+                      <div>
+                        <AvatarComponet
+                          className="bg-transparent w-9 h-9"
+                          src={sugg.avatar || ''}
+                          alt="user"
+                          fallback={<UserRoundIcon className=" h-5 w-5" />}
+                        />
+                      </div>
+                      <div className='flex-1'>
+                        <p className='w-full text-left text-xs'>{sugg.name}</p>
+                        <p className='w-full text-left text-xs'>{sugg.email}</p>
+                      </div>
+                    </Button>
+                  )) : 
+                  (<div className='w-fit m-auto flex items-center gap-2 py-2 text-muted-foreground'>
+                    <p className='w-fit text-center text-sm'>No result found.</p>
+                  </div>)   
+                ) : 
+                (<div className='w-fit m-auto flex items-center gap-2 py-2 text-muted-foreground'>
+                  <LoaderCircleIcon className='w-4 h-4 animate-spin' />
+                  <p className='w-fit text-center text-sm'>Finding user...</p>
+                </div>)
+            }  
+            </ScrollArea>   
+          </Card>}      
+      </div>
+ 
       <Button 
         onClick={sendOtp} 
         disabled={ loadingSend || !ValidEmailFormat(email) } 
         variant={loadingSend ? 'outline' : 'default'}
+        className='w-fit'
       >
         {
           loadingSend ? (<><LoaderCircleIcon className='w-3 h-3 animate-spin mr-2'/> Sending OTP to {email}</>):
           (<p>Send OTP</p>)
         }
-      </Button>
+      </Button>   
     </div>
-    {
-      openSugg && 
-      <Card ref={suggRef} className='w-full h-fit p-3 absolute top-[70px]'>
-        <ScrollArea className='w-full max-h-96 h-fit'>
-        {
-          !loadingSugg ?
-            (listSuggest.length !== 0 ? 
-              listSuggest.map(sugg => (
-                <Button 
-                  key={sugg.id} 
-                  variant='ghost' 
-                  className='w-full p-2 box-content justify-start gap-2 text-muted-foreground hover:text-foreground'
-                  onClick={() => {
-                    SetOpenSugg(false);
-                    SetEmail(sugg.email);
-                    changeData('email', sugg.email);
-                  }}
-                >
-                  <div>
-                    <AvatarComponet
-                      className="bg-transparent w-9 h-9"
-                      src={sugg.avatar || ''}
-                      alt="user"
-                      fallback={<UserRoundIcon className=" h-5 w-5" />}
-                    />
-                  </div>
-                  <div className='flex-1'>
-                    <p className='w-full text-left text-xs'>{sugg.name}</p>
-                    <p className='w-full text-left text-xs'>{sugg.email}</p>
-                  </div>
-                </Button>
-              )) : 
-              (<div className='w-fit m-auto flex items-center gap-2 py-2 text-muted-foreground'>
-                <p className='w-fit text-center text-sm'>No result found.</p>
-              </div>)   
-            ) : 
-            (<div className='w-fit m-auto flex items-center gap-2 py-2 text-muted-foreground'>
-              <LoaderCircleIcon className='w-4 h-4 animate-spin' />
-              <p className='w-fit text-center text-sm'>Finding user...</p>
-            </div>)
-        }  
-        </ScrollArea>   
-      </Card>
-    }
+    
+    <div className='w-full mt-3 flex gap-3 items-start'>
+      {email && 
+            !ValidEmailFormat(email) && 
+            <p className='text-xs text-destructive mt-2'>Email is not valid format. <br/> Ex: example@gmail.com</p>} 
+    </div>
   </div>)
 }

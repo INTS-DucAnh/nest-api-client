@@ -13,7 +13,7 @@ import { useForm } from 'react-hook-form';
 import { Link } from 'react-router-dom';
 import * as z from 'zod';
 
-export default function SignupForm() {
+export default function SignupForm({onSuccess} :{onSuccess?: () => void}) {
   const { post } = useRequest();
   const { toast } = useToast();
   const form = useForm<z.infer<typeof SignupFormSchema>>({
@@ -52,11 +52,12 @@ export default function SignupForm() {
         birthDay: birthDay,
       },
     });
-    if(res && typeof res !== 'boolean') {
+    if(res) {
       toast({
         title: 'Signup Successfully',
         description: 'Signup successfully please login.',
       })
+      if(onSuccess !== undefined) onSuccess();
     }
   };
 

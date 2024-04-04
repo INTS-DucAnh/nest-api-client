@@ -1,4 +1,4 @@
-import { AppWindowIcon, Grid2X2Icon, HomeIcon, TagIcon } from 'lucide-react';
+import { AppWindowIcon, Grid2X2Icon, HomeIcon, TagIcon, UserRoundIcon } from 'lucide-react';
 import { NavigationItem } from '../type/nav.type';
 
 export const PATH_TITLE = {
@@ -6,6 +6,7 @@ export const PATH_TITLE = {
   post: 'Post',
   tag: 'Tag',
   category: 'Category',
+  user: 'User',
 };
 
 export const PATH_TARGET = {
@@ -13,6 +14,7 @@ export const PATH_TARGET = {
   post: 'posts',
   tag: 'tags',
   category: 'categories',
+  user: 'users',
 };
 
 export const PATH_ACTION = {
@@ -43,11 +45,17 @@ export const PRIVATE_NAV_COMPO: {
   post: NavigationItem;
   tag: NavigationItem;
   category: NavigationItem;
+  user: NavigationItem;
 } = {
   dashboard: {
     title: `${PATH_TITLE.dashboard}`,
     path: `${PATH_BASE.admin}`,
     icon: HomeIcon,
+  },
+  user: {
+    title: `${PATH_TITLE.user}`,
+    path: `${PATH_BASE.admin}/${PATH_TARGET.user}`,
+    icon: UserRoundIcon,
   },
   post: {
     title: `${PATH_TITLE.post}`,
@@ -65,3 +73,11 @@ export const PRIVATE_NAV_COMPO: {
     icon: Grid2X2Icon,
   },
 };
+
+export const PATH_PREFIX_BREAD_CRUMB: {[key: string]: string} = {
+  admin: '/admin',
+  post: 'admin/posts',
+  tag: 'admin/posts',
+  category: 'admin/posts',
+  user: 'admin/posts',
+}

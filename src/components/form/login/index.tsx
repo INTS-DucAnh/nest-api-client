@@ -16,7 +16,7 @@ import { useForm } from 'react-hook-form';
 import { Link } from 'react-router-dom';
 import * as z from 'zod';
 
-export default function LoginForm() {
+export default function LoginForm({onSuccess}: {onSuccess?: () => void }) {
   const { post } = useRequest();
   const { toast } = useToast();
   const { SetToken } = useAccessToken();
@@ -42,6 +42,8 @@ export default function LoginForm() {
         title: 'Successfully',
         description: 'Login successfully',
       });
+
+      if(onSuccess) onSuccess();
 
       userContext.set(res.result.accessToken);
       SetToken(res.result.accessToken);

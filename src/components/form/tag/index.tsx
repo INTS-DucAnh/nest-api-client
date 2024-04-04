@@ -2,7 +2,7 @@ import { REQUEST_PATH } from '@/common/constant/api.constant';
 import { TagFormSchema } from '@/common/schema/create-tag.schema';
 import { FormMethodType } from '@/common/type/form.type';
 import { UpdateTagResult } from '@/common/type/result.type';
-import { TagEditType, TagFindItemType } from '@/common/type/tag.type';
+import { TagFindItemType } from '@/common/type/tag.type';
 import RenderFormItem from '@/components/form-item';
 import { Button } from '@/components/ui/button';
 import { DialogClose, DialogFooter } from '@/components/ui/dialog';
@@ -27,7 +27,7 @@ const TextForm = {
   },
 }
 
-export default function TagForm({ tag }: { tag?: TagFindItemType }) {
+export default function TagForm({ tag, onSuccess }: { tag?: TagFindItemType, onSuccess: ()=> void }) {
   const { post, put } = useRequest();
   const [type, SetType] = useState<FormMethodType>(tag ? 'update' : 'create');
   const form = useForm<z.infer<typeof TagFormSchema>>({
@@ -60,9 +60,11 @@ export default function TagForm({ tag }: { tag?: TagFindItemType }) {
       token: true,
     });
     SetLoading(false);
-    // if(res ) {
-
-    // }
+ /* The commented out code `// if(res ) { }` is likely intended to be used for handling the response
+ from the API call after submitting the form. */
+    if(res ) {
+      onSuccess();     
+    }
   };
 
   return (

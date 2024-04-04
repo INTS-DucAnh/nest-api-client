@@ -1,7 +1,9 @@
 import LoginForm from '@/components/form/login';
 import { BracesIcon } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 
 export default function LoginRoute() {
+  const navigate = useNavigate();
   return (
     <div className="flex h-full w-full">
       <div className="flex-1 grid place-items-center">
@@ -12,7 +14,7 @@ export default function LoginRoute() {
               Enter your email below to login to your account
             </p>
           </div>
-          <LoginForm />
+          <LoginForm onSuccess={() => {navigate('/')}} />
         </div>
       </div>
       <div className="flex-1 bg-muted relative">

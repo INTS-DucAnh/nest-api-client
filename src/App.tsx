@@ -10,14 +10,14 @@ export default function App() {
 
   useEffect(() => {
     document.documentElement.className = theme;
-  })
+  }, [theme]);
 
   return (
     <div
       className={`App text-foreground h-[100dvh] w-[100dvw] bg-background`}>
       <UserContextProvider>
-          <AppRouter />
-          <Toaster />    
+        <AppRouter />
+        <Toaster />    
       </UserContextProvider>      
 
     </div>

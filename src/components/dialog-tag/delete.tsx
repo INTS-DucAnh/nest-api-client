@@ -9,18 +9,27 @@ import { ReactNode } from 'react';
 export default function DialogDeleteTag({
   tag,
   trigger,
+  onSuccess,
 }: {
   tag?: TagFindItemType;
   trigger: ReactNode;
+  onSuccess: ()=>void
 }) {
   const { del } = useRequest();
-  const deleteTag = async (tag: TagType | undefined) => {
+  const deleteTag = async (tag: TagFindItemType | undefined) => {
     if (!tag) return false;
-    del({
-      path: `${REQUEST_HOST}/${REQUEST_PATH.tag.base}/`,
+    const res = await del({
+      path:  REQUEST_PATH.tag.deleteOne(),
+      param: tag.id,
       headers: {},
+      token: true,
     });
+
+    if(res ) {
+      onSuccess();
+    }
   };
+
   return (
     <DialogComponent
       trigger={trigger}

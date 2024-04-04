@@ -1,7 +1,9 @@
 import SignupForm from '@/components/form/signup';
 import { BracesIcon } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 
 export default function SignupRoute() {
+  const navigate = useNavigate();
   return (
     <div className="flex h-full w-full">
       <div className="flex-1 bg-muted relative">
@@ -33,7 +35,7 @@ export default function SignupRoute() {
               Enter your infomation below to create to your account
             </p>
           </div>
-          <SignupForm />
+          <SignupForm onSuccess={() => {navigate('/')}}/>
         </div>
       </div>
     </div>

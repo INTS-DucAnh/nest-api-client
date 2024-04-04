@@ -6,6 +6,7 @@ import App from './App';
 import ThemeProvider from './contexts/theme.context';
 import './index.css';
 import reportWebVitals from './reportWebVitals';
+import NavigateProvider from './contexts/navigate.context';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement,
@@ -14,7 +15,9 @@ root.render(
   <React.StrictMode>
     <BrowserRouter>
       <ThemeProvider>
-        <App />
+        <NavigateProvider>
+            <App />
+        </NavigateProvider>
       </ThemeProvider>
     </BrowserRouter>
   </React.StrictMode>,

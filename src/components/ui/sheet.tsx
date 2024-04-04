@@ -18,7 +18,7 @@ export default function SheetComponent({
 }) {
   return (
     <Sheet>
-      <SheetTrigger>{trigger}</SheetTrigger>
+      <SheetTrigger className='w-full'>{trigger}</SheetTrigger>
       <SheetContent>
         <SheetHeader>
           <SheetTitle>{title}</SheetTitle>

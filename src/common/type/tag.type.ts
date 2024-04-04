@@ -18,6 +18,6 @@ export type TagFindItemType = {
   userUpdate: UserModifyBase
 }
 
-export type TagFindType = {
+export type TagFindType = FindBaseType & {
   data: TagFindItemType[]
-} & FindBaseType;
+}

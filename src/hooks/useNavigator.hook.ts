@@ -30,6 +30,7 @@ export default function useNavigator() {
     pathname(location.pathname);
     const token = GetToken();
     token && set(token)
+
   }, [location]);
 
   return { previous, setRoot, replace, add, reset };

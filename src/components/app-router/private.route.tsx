@@ -6,10 +6,12 @@ import { ScrollArea } from '../ui/scroll-area';
 import { useContext } from 'react';
 import { UserContext, UserContextType } from '@/contexts/user.context';
 import { RoleUserEnum } from '@/common/enum/user.enum';
+import useNavigator from '@/hooks/useNavigator.hook';
 
 export default function PrivateRoute() {
   const { GetToken } = useAccessToken();
   const { user } = useContext<UserContextType>(UserContext);
+  const { previous } = useNavigator();
 
   if (!GetToken() || user && user.role === RoleUserEnum.USER) return <Navigate to={'/'} />;
 

@@ -14,6 +14,7 @@ import {
 } from '../common/type/method.type';
 import userAccessToken from './useAccessToken.hook';
 import { RefreshResult } from '@/common/type/result.type';
+import { log } from 'console';
 
 export default function useRequest() {
   const { toast } = useToast();
@@ -56,19 +57,43 @@ export default function useRequest() {
   };
 
   function put<T extends ResponseRequest >({token = false, ...params}: PutMethodType) {
+    let requestPath = params.path;
+
+    if (params.param) {
+      requestPath = `${requestPath}/${params.param}`;
+    }
+    if (params.query) {
+      requestPath = `${requestPath}?${params.query
+        .map(({ key, value }: QueryType) => {
+          return `${key}=${value}`;
+        })
+        .join('&')}`;
+    }
     return BaseRequest<T>({ 
       method: MethodEnum.PUT,
-      path: params.path,
+      path: requestPath,
       data: params.body,
       headers: params.headers,
       token,  
     }, params.log);
   };
 
-  function del<T extends ResponseRequest >({token = false, ...params}: DeleteMethodType) {
+  function del<T extends ResponseRequest >({token = false, ...params}: DeleteMethodType) {    
+    let requestPath = params.path;
+
+    if (params.param) {
+      requestPath = `${requestPath}/${params.param}`;
+    }
+    if (params.query) {
+      requestPath = `${requestPath}?${params.query
+        .map(({ key, value }: QueryType) => {
+          return `${key}=${value}`;
+        })
+        .join('&')}`;
+    }
     return BaseRequest<T>({ 
       method: MethodEnum.DELETE, 
-      path: params.path, 
+      path: requestPath, 
       token, 
     }, params.log);
   };
@@ -133,7 +158,8 @@ export default function useRequest() {
     const res = await BaseRequest<RefreshResult>({
       path: REQUEST_PATH.auth.refresh(),
       method: MethodEnum.POST,
-    });
+    }, false);
+    
     if(res) {
       SetToken(res.result.accessToken)
     }
