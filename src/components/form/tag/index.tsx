@@ -32,7 +32,6 @@ export default function TagForm({ tag }: { tag?: TagEditType }) {
         'Content-type': 'application/json',
       },
       body: data,
-      token: false,
     });
     SetLoading(false);
   };

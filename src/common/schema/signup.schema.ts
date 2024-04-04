@@ -5,10 +5,23 @@ export const SignupFormSchema = z.object({
   name: z
     .string()
     .min(5, { message: 'Fullname must be at least 5 characters. ' }),
-  age: z.coerce
+  date: z.coerce
     .number()
-    .int()
-    .gte(18, { message: 'You must be 18 year old to signup.' }),
+    .int(),
+  month: z.coerce
+  .number()
+  .int(),
+  year: z.coerce
+  .number()
+  .int()
+  .superRefine((year: number, checkPassComplexity: z.RefinementCtx) => {
+    if(new Date().getFullYear() - year < 14) {
+      checkPassComplexity.addIssue({
+        code: 'custom',
+        message: 'User must be at least 14 year old',
+      });
+    }
+  }),
   email: z
     .string()
     .min(1, { message: 'Email must be provide' })

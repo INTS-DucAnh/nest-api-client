@@ -3,10 +3,15 @@ import { Navigate, Outlet } from 'react-router-dom';
 import PrivateHeader from '../private-header';
 import PrivateNavigation from '../private-nav';
 import { ScrollArea } from '../ui/scroll-area';
+import { useContext } from 'react';
+import { UserContext, UserContextType } from '@/contexts/user.context';
+import { RoleUserEnum } from '@/common/enum/user.enum';
 
 export default function PrivateRoute() {
-  const { accessToken } = useAccessToken();
-  if (accessToken) return <Navigate to={'/'} />;
+  const { GetToken } = useAccessToken();
+  const { user } = useContext<UserContextType>(UserContext);
+
+  if (!GetToken() && user && user.role === RoleUserEnum.USER) return <Navigate to={'/'} />;
 
   return (
     <main className="w-full h-full flex">

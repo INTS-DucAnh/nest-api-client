@@ -9,6 +9,22 @@ import * as React from 'react';
 
 import { cn } from '@/lib/utils';
 
+export default function SelectComponent(
+{title, children, value}:
+{title: string, children: React.ReactNode, value: string},
+) {
+  return (
+    <Select>
+      <SelectTrigger className="w-[200px]">
+        <SelectValue placeholder={!value ? title : value} />
+      </SelectTrigger>
+      <SelectContent>
+        {children}
+      </SelectContent>
+    </Select>
+  )
+}
+
 const Select = SelectPrimitive.Root;
 
 const SelectGroup = SelectPrimitive.Group;

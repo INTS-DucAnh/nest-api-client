@@ -6,12 +6,15 @@ import {
 } from '@/contexts/navigate.context';
 import { useContext, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
+import useAccessToken from './useAccessToken.hook';
+import { UserContext, UserContextType } from '@/contexts/user.context';
 
 export default function useNavigator() {
   const { previous, replace, add, reset, remove } =
     useContext<NavigateContextType>(NavigateContext);
-
   const location = useLocation();
+  const {GetToken} = useAccessToken();
+  const {set} = useContext<UserContextType>(UserContext);
 
   const setRoot = (bread: NavigationItem) => {
     replace(0, bread);
@@ -25,6 +28,8 @@ export default function useNavigator() {
 
   useEffect(() => {
     pathname(location.pathname);
+    const token = GetToken();
+    token && set(token)
   }, [location]);
 
   return { previous, setRoot, replace, add, reset };

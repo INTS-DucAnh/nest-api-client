@@ -3,7 +3,6 @@ import { LOCAL_STORAGE_CONSTATNT } from '../common/constant/storage.constant';
 import { LocalStorageType } from '../common/type/storage.type';
 
 export default function useAccessToken() {
-  const [accessToken, SetAccessToken] = useState<string>('');
 
   const getSTR = (): LocalStorageType | null => {
     return JSON.parse(
@@ -16,9 +15,6 @@ export default function useAccessToken() {
     if (!token) {
       return null;
     }
-
-    SetAccessToken(token.token);
-
     return token.token;
   };
 
@@ -33,5 +29,13 @@ export default function useAccessToken() {
     return true;
   };
 
-  return { accessToken, GetToken, SetToken };
+  const ClearToken = () => {
+    const str = getSTR();
+    if(str?.token) {
+      const { token , ...lcStr} = str;
+      localStorage.setItem(LOCAL_STORAGE_CONSTATNT.name || '', JSON.stringify(lcStr))
+    }
+  }
+
+  return { SetToken, GetToken, ClearToken };
 }

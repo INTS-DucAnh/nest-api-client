@@ -22,7 +22,7 @@ export function DropdownMenuComponent({
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>{trigger}</DropdownMenuTrigger>
-      <DropdownMenuContent className={className}>
+      <DropdownMenuContent className={className} align='end'>
         <DropdownMenuLabel>{title}</DropdownMenuLabel>
         <DropdownMenuSeparator />
         {groups}

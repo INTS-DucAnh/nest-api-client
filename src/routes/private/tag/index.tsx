@@ -2,21 +2,16 @@ import { TagType } from '@/common/type/tag.type';
 import DialogCreateTag from '@/components/dialog-tag/create';
 import DialogUpdateTag from '@/components/dialog-tag/update';
 import { Button } from '@/components/ui/button';
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from '@/components/ui/card';
+import CardComponent, { CardContent, CardFooter } from '@/components/ui/card';
 import { Checkbox } from '@/components/ui/checkbox';
 import { DataTable } from '@/components/ui/table';
 import TabsComponent, { TabsContent, TabsLists } from '@/components/ui/tabs';
 import { ColumnDef } from '@tanstack/react-table';
 import { TagIcon } from 'lucide-react';
-import { useState } from 'react';
-import DialogDeleteTag from './delete';
+import { useEffect, useState } from 'react';
+import DialogDeleteTag from '../../../components/dialog-tag/delete';
+import useRequest from '@/hooks/useRequestApi.hook';
+import { REQUEST_HOST, REQUEST_PATH } from '@/common/constant/api.constant';
 
 export const columns: ColumnDef<TagType>[] = [
   {
@@ -67,7 +62,6 @@ export const columns: ColumnDef<TagType>[] = [
     enableHiding: false,
     cell: ({ row }) => {
       const tag = row.original;
-
       return (
         <div>
           <DialogUpdateTag
@@ -75,6 +69,7 @@ export const columns: ColumnDef<TagType>[] = [
             tag={tag}
           />
           <DialogDeleteTag
+            tag={tag}
             trigger={
               <Button variant="destructive" className="ml-2">
                 Delete
@@ -92,8 +87,11 @@ export default function TagRoute() {
     { name: 'abc' },
     { name: 'bcd' },
   ]);
+  const { get } = useRequest();
   const [page, SetPage] = useState(1);
   const [size, SetSize] = useState(10);
+  const [total, SetTotal] = useState();
+  const [key, SetKey] = useState('');
 
   const tabs: TabsLists[] = [
     {
@@ -101,6 +99,17 @@ export default function TagRoute() {
       value: 'list',
     },
   ];
+
+  const getTagList = async () => {
+    await get({
+      path: `${REQUEST_HOST}/${REQUEST_PATH.tag}/`,
+      // query: [{}]
+    });
+  };
+
+  useEffect(() => {
+    getTagList();
+  }, [page]);
 
   return (
     <TabsComponent
@@ -117,13 +126,9 @@ export default function TagRoute() {
         />
       }>
       <TabsContent value={tabs[0].value}>
-        <Card className="text-left">
-          <CardHeader>
-            <CardTitle>Tag Lists</CardTitle>
-            <CardDescription>
-              Manage your tag and view your tag.
-            </CardDescription>
-          </CardHeader>
+        <CardComponent
+          title="Tag Lists"
+          description="Manage your tag and view your tag.">
           <CardContent>
             {data ? (
               <DataTable columns={columns} data={data} />
@@ -158,7 +163,7 @@ export default function TagRoute() {
               of <strong>{0}</strong> products
             </div>
           </CardFooter>
-        </Card>
+        </CardComponent>
       </TabsContent>
     </TabsComponent>
   );

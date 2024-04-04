@@ -12,32 +12,28 @@ import {
   RequestOption,
   ResponseRequest,
 } from '../common/type/method.type';
-import { RefreshTokenResult } from '../common/type/result.type';
 import userAccessToken from './useAccessToken.hook';
-
-export interface RefreshTokenReponse extends ResponseRequest {
-  result: RefreshTokenResult;
-}
+import { RefreshResult } from '@/common/type/result.type';
 
 export default function useRequest() {
   const { toast } = useToast();
   const { GetToken, SetToken } = userAccessToken();
 
-  const post = (params: PostMethodType) => {
+  function post<T extends ResponseRequest >(params: PostMethodType) {
     if (!params.formData && !params.body) {
       console.log(ERROR_MESSSAGE.HD0004);
     }
 
-    return BaseRequest({
+    return BaseRequest<T>({
       method: MethodEnum.POST,
       path: params.path,
       data: params.body,
       formData: params.formData,
       headers: params.headers,
-    });
+    }, params.log);
   };
 
-  const get = (params: GetMethodType) => {
+  function get<T extends ResponseRequest >(params: GetMethodType) {
     let requestPath = params.path;
 
     if (params.param) {
@@ -51,25 +47,26 @@ export default function useRequest() {
         .join('&')}`;
     }
 
-    return BaseRequest({ method: MethodEnum.GET, path: requestPath });
+    return BaseRequest<T>({ method: MethodEnum.GET, path: requestPath }, params.log);
   };
 
-  const put = (params: PutMethodType) => {
-    return BaseRequest({ method: MethodEnum.PUT, path: params.path });
+  function put<T extends ResponseRequest >(params: PutMethodType) {
+    return BaseRequest<T>({ method: MethodEnum.PUT, path: params.path }, params.log);
   };
 
-  const del = (params: DeleteMethodType) => {
-    return BaseRequest({ method: MethodEnum.DELETE, path: params.path });
+  function del<T extends ResponseRequest >(params: DeleteMethodType) {
+    return BaseRequest<T>({ method: MethodEnum.DELETE, path: params.path }, params.log);
   };
 
-  const BaseRequest = async ({
+  async function BaseRequest<T extends ResponseRequest>({
     method,
     path,
     data,
     formData,
     ...options
-  }: RequestOption) => {
-    try {
+  }: RequestOption, log=true){
+    try { 
+
       const req = await fetch(`${REQUEST_HOST}/${path}`, {
         ...options,
         method: method,
@@ -85,22 +82,25 @@ export default function useRequest() {
           : {}),
       });
 
-      const dataRes: ResponseRequest = await req.json();
+      const dataRes:T = await req.json();
 
       if (!req.ok) {
         if (dataRes.code === ErrorCodeEnum.TOKEN_REQUIRED) {
+          log && toast({
+            variant: 'destructive',
+            title: 'Uh oh! Access token is expired!',
+            description: `Trying to get Access Token and call API again.`,
+          });
           await RefreshToken();
           await BaseRequest({ method, path, data, formData, ...options });
         }
-        toast({
+        else log && toast({
           variant: 'destructive',
           title: 'Uh oh! Something went wrong!',
-          // description: `${ERROR_MESSSAGE[dataRes.code]}`,
-          description: `${dataRes.message}`,
+          description: `${ERROR_MESSSAGE[dataRes.code]}`,
         });
         return false;
       }
-
       return dataRes;
     } catch (err) {
       toast({
@@ -108,15 +108,26 @@ export default function useRequest() {
         title: 'Uh oh! Something went wrong!',
         description: 'There was a problem with your request.',
       });
+      return false;
     }
   };
 
   const RefreshToken = async () => {
-    const res = await BaseRequest({
+    const res = await BaseRequest<RefreshResult>({
       path: REQUEST_PATH.auth.refresh(),
       method: MethodEnum.GET,
     });
+    if(typeof res !== 'boolean') {
 
+      SetToken(res.result.accessToken)
+    }
+    else {
+      toast({
+        variant: 'destructive',
+        title: 'Uh ph! Fail to refresh your access token',
+        description: 'Fail to refresh access token.',
+      })
+    }
     return res;
   };
 

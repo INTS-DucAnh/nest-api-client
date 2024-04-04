@@ -1,15 +1,16 @@
-import { UserType } from '@/common/type/user.type';
+import { UserLoginInfo } from '@/common/type/user.type';
 import { createContext, ReactNode, useState } from 'react';
+import * as jwt_decode from 'jwt-decode';
 
 export interface UserContextType {
-  user: UserType | null;
-  set: (user: UserType) => void;
+  user: UserLoginInfo | null;
+  set: (token: string | null) => void;
   reset: () => void;
 }
 
 export const UserContext = createContext<UserContextType>({
   user: null,
-  set: (user: UserType) => null,
+  set: (token: string | null) => null,
   reset: () => null,
 });
 
@@ -18,10 +19,13 @@ export default function UserContextProvider({
 }: {
   children: ReactNode;
 }) {
-  const [user, SetUser] = useState<UserType | null>(null);
+  const [user, SetUser] = useState<UserLoginInfo | null>(null);
 
-  const set = (user: UserType) => {
-    SetUser(user);
+  const set = (token: string | null) => {
+    if(!token) return;
+    const decoded:UserLoginInfo = jwt_decode.jwtDecode(token);
+    SetUser(decoded);
+    return decoded;
   };
 
   const reset = () => {

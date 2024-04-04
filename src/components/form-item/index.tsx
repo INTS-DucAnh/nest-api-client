@@ -11,7 +11,7 @@ export default function RenderFormItem({
   require?: boolean;
 }) {
   return (
-    <FormItem>
+    <FormItem className='w-full'>
       <FormLabel>
         <div className="flex">
           <p className="text-sm">{label}</p>

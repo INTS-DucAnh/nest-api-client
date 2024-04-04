@@ -8,8 +8,8 @@ export type QueryType = {
 
 interface BaseMethodType {
   path: string;
-  token: boolean;
-  headers: HeadersInit;
+  headers?: HeadersInit;
+  log?:boolean;
 }
 
 export interface GetMethodType extends BaseMethodType {
@@ -40,7 +40,6 @@ export interface ResponseRequest {
   status: number;
   code: ErrorCodeEnum;
   message?: string;
-  result?: object | object[];
 }
 
 export interface RequestOption extends RequestInit {

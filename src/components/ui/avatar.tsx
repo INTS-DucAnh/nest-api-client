@@ -15,9 +15,9 @@ export default function AvatarComponet({
   className?: string;
 }) {
   return (
-    <Avatar>
+    <Avatar className={className}>
       <AvatarImage src={src} alt={alt || '@shadcn'} />
-      <AvatarFallback className={className}>{fallback}</AvatarFallback>
+      <AvatarFallback>{fallback}</AvatarFallback>
     </Avatar>
   );
 }

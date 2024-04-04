@@ -4,6 +4,15 @@ export const StrongPassword = (
   password: string,
   checkPassComplexity: z.RefinementCtx,
 ) => {
+  if (CheckStrongPassword(password)) {
+    checkPassComplexity.addIssue({
+      code: 'custom',
+      message: 'Password is not strong enough',
+    });
+  }
+};
+
+export const CheckStrongPassword = (password: string) => {
   const containsUppercase = (ch: string) => /[A-Z]/.test(ch);
   const containsLowercase = (ch: string) => /[a-z]/.test(ch);
   const containsSpecialChar = (ch: string) =>
@@ -25,9 +34,15 @@ export const StrongPassword = (
     countOfSpecialChar < 1 ||
     countOfNumbers < 1
   ) {
-    checkPassComplexity.addIssue({
-      code: 'custom',
-      message: 'Password is not strong enough',
-    });
+    return true
   }
-};
+  return false;
+}
+
+export const ValidEmailFormat = (email: string )=> {
+  return String(email)
+    .toLowerCase()
+    .match(
+      /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
+    );
+}

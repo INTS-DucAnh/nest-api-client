@@ -7,10 +7,13 @@ export const REQUEST_HOST = `${process.env.REACT_APP_BACKEND_HOST}:${process.env
 export const REQUEST_PATH = {
   user: {
     base: 'user',
+    getByEmail: () => `${REQUEST_PATH.user.base}/email`,
+    sendOTP: () => `${REQUEST_PATH.user.base}/random-code`,
+    signup: () => `${REQUEST_PATH.user.base}/sign-up`,
   },
   auth: {
     base: 'auth',
-    signup: () => `${REQUEST_PATH.auth.base}/sign-up`,
+    logout: () => `${REQUEST_PATH.auth.base}/clear-cookie`,
     login: () => `${REQUEST_PATH.auth.base}/login`,
     refresh: () => `${REQUEST_PATH.auth.base}/refresh`,
   },

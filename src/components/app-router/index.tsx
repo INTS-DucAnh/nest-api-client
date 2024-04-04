@@ -1,12 +1,13 @@
-import NavigateProvider from '@/contexts/navigate.context';
-import LoginRoute from '@/routes/auth/login';
-import SignupRoute from '@/routes/auth/signup';
 import DashboardRoute from '@/routes/private/_';
 import TagRoute from '@/routes/private/tag';
 import { Route, Routes } from 'react-router-dom';
 import AuthRoute from './auth.route';
 import PrivateRoute from './private.route';
 import PublicRoute from './public.route';
+import NavigateProvider from '@/contexts/navigate.context';
+import LoginRoute from '@/routes/auth/login/login';
+import SignupRoute from '@/routes/auth/signup/signup';
+import ForgotPasswordHolder from '@/routes/auth/forgot-password';
 
 export default function AppRouter() {
   return (
@@ -34,8 +35,10 @@ export default function AppRouter() {
         <Route element={<AuthRoute />}>
           <Route path="login" element={<LoginRoute />} />
           <Route path="signup" element={<SignupRoute />} />
+          <Route path="forgot-password" element={<ForgotPasswordHolder/>} />
         </Route>
-      </Routes>
+      </Routes>      
     </NavigateProvider>
+
   );
 }
