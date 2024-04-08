@@ -4,6 +4,7 @@ import SignupRoute from '@/routes/auth/signup/signup';
 import DashboardRoute from '@/routes/private/_';
 import CategoryRoute from '@/routes/private/category';
 import TagRoute from '@/routes/private/tag';
+import HomeRoute from '@/routes/public/home';
 import { Route, Routes } from 'react-router-dom';
 import AuthRoute from './auth.route';
 import PrivateRoute from './private.route';
@@ -24,7 +25,7 @@ export default function AppRouter() {
         </Route>
       </Route>
       <Route element={<PublicRoute />}>
-        <Route path='' element={<p>Public Dashboard</p>} />
+        <Route path='' element={<HomeRoute />} />
         <Route path='posts'>
           <Route path='' element={<p>Post list</p>} />
           <Route path=':id' element={<p>Post Detail</p>} />

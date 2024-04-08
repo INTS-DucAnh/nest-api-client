@@ -48,6 +48,26 @@
     --input: 217.2 32.6% 17.5%;
     --ring: 224.3 76.3% 48%;
   }
+
+  .dot-bg {
+    --dot-color: rgb(255, 255, 255, 0.1);
+    --dot-space: 50px;
+    background: var(--background);
+    background-image: radial-gradient( var(--dot-color) 5%, transparent 0);
+    background-size: var(--dot-space) var(--dot-space);
+    position: relative;
+  }
+  .dot-bg::before {
+    top: 0;
+    left: 0;
+    position: absolute;
+    content: '';
+    width: 100%;
+    height: 100%;
+    background: var(--background);
+    background: radial-gradient(transparent 0%, var(--background) 80%);
+    z-index: 0;
+  }
 }
 
  
@@ -60,15 +80,4 @@
     font-feature-settings: "rlig" 1, "calt" 1;
     font-family: 'Geist Variable';
   }
-}
-
-.dot-bg {
-  --dot-bg: #161616;
-  --dot-color: #848282;
-  --dot-size: 1px;
-  --dot-space: 50px;
-  background:
-    linear-gradient(90deg, var(--dot-bg) calc(var(--dot-space) - var(--dot-size)), transparent 1%) center / var(--dot-space) var(--dot-space),
-    linear-gradient(var(--dot-bg) calc(var(--dot-space) - var(--dot-size)), transparent 1%) center / var(--dot-space) var(--dot-space),
-    var(--dot-color);
 }
