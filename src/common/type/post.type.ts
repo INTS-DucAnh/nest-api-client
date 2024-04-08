@@ -16,6 +16,7 @@ export type PostEditType = {
 
 export type PostFindItemType = RecordBase &
   PostType & {
+    comment: number;
     like: number;
     isLike?: boolean;
     user: ModifierPostType;
@@ -27,7 +28,7 @@ export type PostModifier = {
 };
 
 export type PostDetailType = PostFindItemType & {
-  comment: PostComment1Type[];
+  comments: PostComment1Type[];
 };
 
 export type PostCommentBaseType = RecordBase & {

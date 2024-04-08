@@ -7,8 +7,8 @@ export const FAKE_POST: PostDetailType = {
   content: 'Test1',
   title: 'Test1',
   thumbnail: null,
+  comment: 10,
   like: 100,
-  isLike: false,
   user: {
     id: 'e3d7fa10-664b-4ed5-a131-6e0e2e5c1060',
     name: 'ADMIN',
@@ -16,7 +16,7 @@ export const FAKE_POST: PostDetailType = {
     avatar: null,
     birthDay: '2002-02-25',
   },
-  comment: [
+  comments: [
     {
       id: 'b1889a15-355b-4bd6-ac15-9dc289199529',
       createdDate: new Date('2024-04-06T11:01:20.802Z'),

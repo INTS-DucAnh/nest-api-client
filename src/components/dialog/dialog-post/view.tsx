@@ -1,11 +1,10 @@
 import { FAKE_POST } from '@/common/constant/fake.costant';
 import { PostDetailType } from '@/common/type/post.type';
 import PostDetail from '@/components/post-detail';
-import { Button } from '@/components/ui/button';
-import { useEffect, useState } from 'react';
+import { ReactNode, useEffect, useState } from 'react';
 import DialogComponent from '..';
 
-export default function DialogPostDetail({ id }: { id: string }) {
+export default function DialogPostDetail({ id, trigger }: { id: string; trigger: ReactNode }) {
   const [post, SetPost] = useState<PostDetailType>();
 
   const fakeApi = (): Promise<PostDetailType> => {
@@ -30,7 +29,7 @@ export default function DialogPostDetail({ id }: { id: string }) {
   }, []);
 
   return (
-    <DialogComponent title='Post Detail' trigger={<Button>View Detail</Button>}>
+    <DialogComponent title='Post Detail' trigger={trigger}>
       {post && <PostDetail post={post} />}
     </DialogComponent>
   );

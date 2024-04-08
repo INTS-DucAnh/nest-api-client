@@ -1,17 +1,18 @@
 import { ResponseRequest } from './method.type';
+import { PostFindItemType } from './post.type';
 import { TagFindItemType, TagFindType } from './tag.type';
 import { FindUserByEmail, SendOTPUser, UserLogin } from './user.type';
 
 export interface LoginResult extends ResponseRequest {
-  result: UserLogin
-};
+  result: UserLogin;
+}
 
 export interface RefreshResult extends ResponseRequest {
-  result: UserLogin
-};
+  result: UserLogin;
+}
 
 export interface FindUserByEmailResult extends ResponseRequest {
-  result: FindUserByEmail[]
+  result: FindUserByEmail[];
 }
 
 export interface SendOTPResult extends ResponseRequest {
@@ -32,4 +33,8 @@ export interface FindTagResult extends ResponseRequest {
 
 export interface UpdateTagResult extends ResponseRequest {
   result: TagFindItemType;
+}
+
+export interface MostLikeResult extends ResponseRequest {
+  result: PostFindItemType[];
 }

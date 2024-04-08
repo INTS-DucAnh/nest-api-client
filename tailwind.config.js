@@ -77,6 +77,12 @@ module.exports = {
           from: { transform: "translateX(-100%)" },
           to: { transform: "translateX(0%)" },
         },
+        cursor: {
+          from: { opacity: "0" },
+          "25%": { opacity: "1" },
+          "75%": { opacity: "1" },
+          to: { opacity: "0" },
+        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
@@ -84,6 +90,7 @@ module.exports = {
         "caret-blink": "caret-blink 1.25s ease-out infinite",
         "appear-right": "appear-right 0.1s ease-out",
         "appear-left": "appear-left 0.1s ease-out",
+        cursor: "cursor 1s ease-in infinite",
       },
     },
   },

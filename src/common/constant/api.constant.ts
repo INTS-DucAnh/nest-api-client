@@ -21,6 +21,12 @@ export const REQUEST_PATH = {
   },
   post: {
     base: 'post',
+    find: () => `${REQUEST_PATH.post.base}`,
+    create: () => `${REQUEST_PATH.post.base}`,
+    update: () => `${REQUEST_PATH.post.base}`,
+    deleteOne: () => `${REQUEST_PATH.post.base}`,
+    deleteMutiple: () => `${REQUEST_PATH.post.base}/mutiple`,
+    mostLike: () => `${REQUEST_PATH.post.base}/most-like`,
   },
   tag: {
     base: 'tags',
