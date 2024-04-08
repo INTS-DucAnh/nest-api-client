@@ -6,14 +6,12 @@ import AvatarComponet from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { toast } from '@/components/ui/use-toast';
-import { ForgotPasswordContext, ForgotPasswordContextType } from '@/contexts/forgot-password.context'
+import { ForgotPasswordContext, ForgotPasswordContextType } from '@/contexts/forgot-password.context';
 import useRequest from '@/hooks/useRequestApi.hook';
 import { LoaderCircleIcon, UserRoundIcon } from 'lucide-react';
 import { useContext, useEffect, useRef, useState } from 'react';
-import { TypeFlags } from 'typescript';
 
 export default function EmailSelectStage({className, onSuccess} :  {className: string, onSuccess: ()=> void}) {
   const {data, changeData} = useContext<ForgotPasswordContextType>(ForgotPasswordContext);

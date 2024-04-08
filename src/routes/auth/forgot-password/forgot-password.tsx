@@ -1,12 +1,11 @@
 import { Button } from '@/components/ui/button';
-import { useEffect, useState } from 'react'
-import StageForgotPassword from './stage';
 import ToolTip from '@/components/ui/tooltip';
 import { KeyRoundIcon, LockKeyholeIcon, MailIcon } from 'lucide-react';
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import StageForgotPassword from './stage';
 import EmailSelectStage from './stage-1';
 import OTPValidationStage from './stage-2';
-import { useToast } from '@/components/ui/use-toast';
-import { useNavigate } from 'react-router-dom';
 import ResetPasswordStage from './stage-3';
 
 type Stage = {
@@ -55,7 +54,6 @@ const stages: Stage[] = [
 ]
 
 export default function ForgotPasswordRoute() {
-  const {toast} = useToast();
   const navigate = useNavigate();
   const [currStage, SetCurrStage] = useState<number>(1); 
   const [dir, SetDir] = useState<number>(-1);

@@ -1,8 +1,8 @@
 import { REQUEST_PATH } from '@/common/constant/api.constant';
-import { TagFormSchema } from '@/common/schema/tag.schema';
+import { CategoryFormSchema } from '@/common/schema/category.schema';
+import { CategoryFindItemType } from '@/common/type/category.type';
 import { FormMethodType } from '@/common/type/form.type';
 import { UpdateTagResult } from '@/common/type/result.type';
-import { TagFindItemType } from '@/common/type/tag.type';
 import RenderFormItem from '@/components/form-item';
 import { Button } from '@/components/ui/button';
 import { DialogClose, DialogFooter } from '@/components/ui/dialog';
@@ -19,48 +19,47 @@ import * as z from 'zod';
 const TextForm = {
   update: {
     confirm: 'Update',
-    updating: 'Updating Tag',
+    updating: 'Updating Category',
   },
   create: {
     confirm: 'Create',
-    updating: 'Creating Tag',
+    updating: 'Creating Category',
   },
 };
 
-export default function TagForm({ tag, onSuccess }: { tag?: TagFindItemType; onSuccess: () => void }) {
+export default function CategoryForm({ category, onSuccess }: { category?: CategoryFindItemType; onSuccess: () => void }) {
   const { post, put } = useRequest();
-  const [type, SetType] = useState<FormMethodType>(tag ? 'update' : 'create');
-  const form = useForm<z.infer<typeof TagFormSchema>>({
-    resolver: zodResolver(TagFormSchema),
+  const [type, SetType] = useState<FormMethodType>(category ? 'update' : 'create');
+  const form = useForm<z.infer<typeof CategoryFormSchema>>({
+    resolver: zodResolver(CategoryFormSchema),
     defaultValues: {
-      name: tag?.name || '',
+      name: category?.name || '',
     },
   });
   const [loading, SetLoading] = useState<boolean>(false);
 
-  const defMethod = () => (tag ? put : post);
+  const defMethod = () => (category ? put : post);
 
-  const onSubmit = async (data: z.infer<typeof TagFormSchema>) => {
+  const onSubmit = async (data: z.infer<typeof CategoryFormSchema>) => {
     SetLoading(true);
 
     const method = defMethod();
 
     const res = await method<UpdateTagResult>({
-      path: !tag ? REQUEST_PATH.tag.create() : REQUEST_PATH.tag.update(),
+      path: !category ? REQUEST_PATH.category.create() : REQUEST_PATH.category.update(),
       headers: {
         'Content-Type': 'application/json',
       },
-      body: !tag
+      body: !category
         ? data
         : {
             ...data,
-            id: tag.id,
+            id: category.id,
           },
       token: true,
     });
     SetLoading(false);
-    /* The commented out code `// if(res ) { }` is likely intended to be used for handling the response
- from the API call after submitting the form. */
+
     if (res) {
       onSuccess();
     }
@@ -75,8 +74,8 @@ export default function TagForm({ tag, onSuccess }: { tag?: TagFindItemType; onS
             control={form.control}
             name='name'
             render={({ field }) => (
-              <RenderFormItem label='Tagname' require>
-                <Input placeholder='Tagname' {...field} />
+              <RenderFormItem label='Category Name' require>
+                <Input placeholder='Category Name' {...field} />
               </RenderFormItem>
             )}
           />

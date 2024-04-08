@@ -32,6 +32,11 @@ export const REQUEST_PATH = {
   },
   category: {
     base: 'category',
+    find: () => `${REQUEST_PATH.category.base}`,
+    create: () => `${REQUEST_PATH.category.base}`,
+    update: () => `${REQUEST_PATH.category.base}`,
+    deleteOne: () => `${REQUEST_PATH.category.base}`,
+    deleteMutiple: () => `${REQUEST_PATH.category.base}/mutiple`,
   },
   image: {
     base: 'image',

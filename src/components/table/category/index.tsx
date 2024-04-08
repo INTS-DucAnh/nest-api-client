@@ -4,8 +4,8 @@ import { DateModifyRecordEnum, ModifierRecordEnum } from '@/common/enum/table.en
 import { DateFormatType } from '@/common/type/date.type';
 import { FindTagResult } from '@/common/type/result.type';
 import { TagFindItemType } from '@/common/type/tag.type';
+import DialogUpdatecategory from '@/components/dialog/dialog-category/update';
 import DialogDeleteTag from '@/components/dialog/dialog-tag/delete';
-import DialogUpdateTag from '@/components/dialog/dialog-tag/update';
 import FetchingData from '@/components/loading/fetching';
 import { Button } from '@/components/ui/button';
 import CardComponent, { CardContent, CardFooter } from '@/components/ui/card';
@@ -30,7 +30,7 @@ export interface TagTableState extends TableState {
 
 export type ActionMenuTagItemType = { trigger: React.FC<{ data: TagFindItemType }> };
 
-export default function TagTable() {
+export default function CategoryTable() {
   const { reload, SetReloadTable } = useContext<TableContextType>(TableContext);
   const { get } = useRequest();
   const { state, SetTableState } = useTableState<TagTableState>({
@@ -51,9 +51,9 @@ export default function TagTable() {
     {
       trigger: ({ data }: { data: TagFindItemType }) => {
         return (
-          <DialogUpdateTag
+          <DialogUpdatecategory
             onSuccess={onSuccess}
-            tag={data}
+            category={data}
             trigger={
               <Button className='w-full h-fit justify-start p-[5px]' variant='ghost'>
                 <PencilIcon className='w-3 h-3 mr-2' /> Edit
@@ -155,12 +155,12 @@ export default function TagTable() {
     },
   ];
 
-  const getTagList = async () => {
+  const getCategoryList = async () => {
     SetTableState({
       fetching: true,
     });
     const res = await get<FindTagResult>({
-      path: REQUEST_PATH.tag.find(),
+      path: REQUEST_PATH.category.find(),
       query: [
         { key: 'page', value: state.page },
         { key: 'size', value: state.size },
@@ -180,7 +180,7 @@ export default function TagTable() {
   };
 
   useEffect(() => {
-    reload && getTagList();
+    reload && getCategoryList();
   }, [state.page, state.name, reload]);
 
   useEffect(() => {
@@ -189,7 +189,7 @@ export default function TagTable() {
   }, [debounced]);
 
   return (
-    <CardComponent title='Tag Lists' description='Manage your tag and view your tag.'>
+    <CardComponent title='Category Lists' description='Manage and view your category.'>
       <CardContent>
         {state.fetching && <FetchingData />}
 

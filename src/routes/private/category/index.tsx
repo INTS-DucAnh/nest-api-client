@@ -1,20 +1,20 @@
-import DialogCreateTag from '@/components/dialog/dialog-tag/create';
-import TagTable from '@/components/table/tag';
+import DialogCreateCategory from '@/components/dialog/dialog-category/create';
+import CategoryTable from '@/components/table/category';
 import { Button } from '@/components/ui/button';
 import TabsComponent, { TabsContent, TabsLists } from '@/components/ui/tabs';
 import TableProvider, { TableContext, TableContextType } from '@/contexts/table.context';
-import { TagIcon } from 'lucide-react';
+import { Grid2X2Icon } from 'lucide-react';
 import { useContext } from 'react';
 
-export default function TagRoute() {
+export default function CategoryRoute() {
   return (
     <TableProvider>
-      <TagPage />
+      <CategoryPage />
     </TableProvider>
   );
 }
 
-function TagPage() {
+function CategoryPage() {
   const { reload, SetReloadTable } = useContext<TableContextType>(TableContext);
   const tabs: TabsLists[] = [
     {
@@ -29,14 +29,14 @@ function TagPage() {
       className='w-full justify-start flex flex-col gap-3'
       tabsRight={
         !reload && (
-          <DialogCreateTag
+          <DialogCreateCategory
             onSuccess={() => {
               SetReloadTable(true);
             }}
             trigger={
               <Button>
-                <TagIcon className='h-3 w-3 mr-1' />
-                <p className='font-sm'>Add Tag</p>
+                <Grid2X2Icon className='h-3 w-3 mr-1' />
+                <p className='font-sm'>Add Category</p>
               </Button>
             }
           />
@@ -44,7 +44,7 @@ function TagPage() {
       }
     >
       <TabsContent value={tabs[0].value} className='relative'>
-        <TagTable />
+        <CategoryTable />
       </TabsContent>
     </TabsComponent>
   );

@@ -4,10 +4,9 @@ import { ScrollArea } from '../ui/scroll-area';
 
 export default function PublicRoute() {
   return (
-    <main className="w-full h-full relative flex flex-col">
+    <main className='w-full h-full relative flex flex-col'>
       <PublicNavigation />
-      <ScrollArea className="flex-1 box-border">
-        <div className="h-[10000px]">asdf</div>
+      <ScrollArea className='flex-1 box-border'>
         <Outlet />
       </ScrollArea>
     </main>

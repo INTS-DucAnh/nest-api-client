@@ -9,12 +9,12 @@ export type UserType = {
 };
 
 export type UserLoginInfo = {
-  id: string,
-  name: string,
-  email: string,
-  avatar: string | null,
-  role: RoleUserEnum
-}
+  id: string;
+  name: string;
+  email: string;
+  avatar: string | null;
+  role: RoleUserEnum;
+};
 
 export type UserLogin = {
   user: UserLoginInfo;
@@ -23,20 +23,18 @@ export type UserLogin = {
 };
 
 export type FindUserByEmail = {
-  name: string,
-  id: string,
-  email: string,
-  avatar: string | null,
-}
+  name: string;
+  id: string;
+  email: string;
+  avatar: string | null;
+};
 
 export type SendOTPUser = {
   expired: number;
-}
+};
 
 export type UserModifyBase = {
-  id: string,
-  name: string,
-  avatar: string | null
-}
-
-// export type UserLogin = {};
+  id: string;
+  name: string;
+  avatar: string | null;
+};

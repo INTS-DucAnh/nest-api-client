@@ -19,7 +19,6 @@ export default function App() {
         <AppRouter />
         <Toaster />    
       </UserContextProvider>      
-
     </div>
   );
 }

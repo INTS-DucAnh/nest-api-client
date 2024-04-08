@@ -20,9 +20,7 @@ export default function EmptyTable(
           {subtitle}
         </p>
         <div className="mt-5">
-          {
-            addRecord
-          }
+          {addRecord}
         </div>
       </div>
     </div>)

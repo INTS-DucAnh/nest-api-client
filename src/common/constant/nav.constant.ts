@@ -74,10 +74,10 @@ export const PRIVATE_NAV_COMPO: {
   },
 };
 
-export const PATH_PREFIX_BREAD_CRUMB: {[key: string]: string} = {
+export const PATH_PREFIX_BREAD_CRUMB: { [key: string]: string } = {
   admin: '/admin',
   post: 'admin/posts',
   tag: 'admin/posts',
   category: 'admin/posts',
   user: 'admin/posts',
-}
+};

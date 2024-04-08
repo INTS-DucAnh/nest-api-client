@@ -1,10 +1,10 @@
 import { useState } from 'react';
 
 export interface TableState {
-  page: number, 
-  size: number,
-  total: number,
-  fetching: boolean,
+  page: number;
+  size: number;
+  total: number;
+  fetching: boolean;
 }
 
 export default function useTableState<T extends TableState>(initValue: T) {
@@ -17,5 +17,5 @@ export default function useTableState<T extends TableState>(initValue: T) {
     }));
   };
 
-  return {state, SetTableState}
+  return { state, SetTableState };
 }

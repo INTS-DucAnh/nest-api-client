@@ -1,19 +1,19 @@
 import { FindBaseType } from './find.type';
 import { RecordBase, RecordModifier } from './table.type';
 
-export type TagType = {
+export type CategoryType = {
   name: string;
 };
 
-export type TagEditType = {
+export type CategoryEditType = {
   name: string;
 };
 
-export type TagFindItemType = RecordModifier &
+export type CategoryFindItemType = RecordModifier &
   RecordBase & {
     name: string;
   };
 
 export type TagFindType = FindBaseType & {
-  data: TagFindItemType[];
+  data: CategoryFindItemType[];
 };
