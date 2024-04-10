@@ -79,6 +79,7 @@ export default function useRequest() {
         method: MethodEnum.PUT,
         path: requestPath,
         data: params.body,
+        formData: params.formData,
         headers: params.headers,
         token,
       },

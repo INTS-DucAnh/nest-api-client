@@ -10,7 +10,7 @@ export default function HomeHeadline() {
       <div className='absolute top-0 left-0 w-full h-full z-[0] backdrop-blue-sm'></div>
       <div className='z-[1] relative w-[900px] mx-auto'>
         <div>
-          <h1 className='text-[4rem] font-semibold text-foreground tracking-normal drop-shadow-[0_10px_35px_rgba(0,0,0,1)] dark:drop-shadow-[0_10px_35px_rgba(255,255,255,0.7)] flex w-fit mx-auto items-end gap-1'>
+          <h1 className='text-[4rem] font-semibold text-foreground tracking-normal drop-shadow-[0_10px_35px_rgba(0,0,0,1)] dark:drop-shadow-[0_10px_35px_rgba(255,255,255,0.7)] flex w-fit mx-auto items-center gap-1'>
             Engage: View & Comment<div className='cursor animate-cursor'></div>
           </h1>
           <p className=' text-muted-foreground my-5 relative'>
@@ -26,10 +26,10 @@ export default function HomeHeadline() {
           <Button
             variant={'outline'}
             onClick={() => {
-              navigate('/');
+              navigate('/#home_mostlike');
             }}
           >
-            Preview
+            Signup
           </Button>
         </div>
       </div>

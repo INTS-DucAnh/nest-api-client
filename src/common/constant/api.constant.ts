@@ -2,7 +2,9 @@ export const REQUEST_OPTION: RequestInit = {
   credentials: 'include',
 };
 
-export const REQUEST_HOST = `${process.env.REACT_APP_BACKEND_HOST}:${process.env.REACT_APP_BACKEND_PORT}/${process.env.REACT_APP_BACKEND_PREFIX}`;
+export const REQUEST_URL = `${process.env.REACT_APP_BACKEND_HOST}:${process.env.REACT_APP_BACKEND_PORT}`;
+
+export const REQUEST_HOST = `${REQUEST_URL}/${process.env.REACT_APP_BACKEND_PREFIX}`;
 
 export const REQUEST_PATH = {
   user: {
@@ -22,6 +24,7 @@ export const REQUEST_PATH = {
   post: {
     base: 'post',
     find: () => `${REQUEST_PATH.post.base}`,
+    findByCategory: () => `${REQUEST_PATH.post.base}/find-by-category`,
     create: () => `${REQUEST_PATH.post.base}`,
     update: () => `${REQUEST_PATH.post.base}`,
     deleteOne: () => `${REQUEST_PATH.post.base}`,
@@ -42,7 +45,7 @@ export const REQUEST_PATH = {
     create: () => `${REQUEST_PATH.category.base}`,
     update: () => `${REQUEST_PATH.category.base}`,
     deleteOne: () => `${REQUEST_PATH.category.base}`,
-    deleteMutiple: () => `${REQUEST_PATH.category.base}/mutiple`,
+    deleteMutiple: () => `${REQUEST_PATH.category.base}/delete`,
   },
   image: {
     base: 'image',

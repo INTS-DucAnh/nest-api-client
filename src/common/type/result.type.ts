@@ -1,5 +1,5 @@
 import { ResponseRequest } from './method.type';
-import { PostFindItemType } from './post.type';
+import { PostFindAdminType, PostFindItemType } from './post.type';
 import { TagFindItemType, TagFindType } from './tag.type';
 import { FindUserByEmail, SendOTPUser, UserLogin } from './user.type';
 
@@ -37,4 +37,8 @@ export interface UpdateTagResult extends ResponseRequest {
 
 export interface MostLikeResult extends ResponseRequest {
   result: PostFindItemType[];
+}
+
+export interface PostAdminFindResult extends ResponseRequest {
+  result: PostFindAdminType;
 }

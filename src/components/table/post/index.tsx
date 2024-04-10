@@ -1,16 +1,13 @@
-import { REQUEST_PATH } from '@/common/constant/api.constant';
+import { REQUEST_PATH, REQUEST_URL } from '@/common/constant/api.constant';
 import { DateFormat, SeparateSecondary, Time12Format } from '@/common/constant/date.constant';
 import { DateModifyRecordEnum, ModifierRecordEnum } from '@/common/enum/table.enum';
-import { CategoryFindItemType } from '@/common/type/category.type';
 import { DateFormatType } from '@/common/type/date.type';
-import { FindTagResult } from '@/common/type/result.type';
-import { TagFindItemType } from '@/common/type/tag.type';
-import DialogDeleteCategory from '@/components/dialog/dialog-category/delete';
-import DialogUpdatecategory from '@/components/dialog/dialog-category/update';
+import { PostAdminFindItemType } from '@/common/type/post.type';
+import { PostAdminFindResult } from '@/common/type/result.type';
+import DialogUpdatePost from '@/components/dialog/dialog-post/update';
 import FetchingData from '@/components/loading/fetching';
 import { Button } from '@/components/ui/button';
 import CardComponent, { CardContent, CardFooter } from '@/components/ui/card';
-import { Checkbox } from '@/components/ui/checkbox';
 import { Input } from '@/components/ui/input';
 import { DataTable } from '@/components/ui/table';
 import { useToast } from '@/components/ui/use-toast';
@@ -19,45 +16,48 @@ import useDebounce from '@/hooks/useDebounce.hook';
 import useRequest from '@/hooks/useRequestApi.hook';
 import useTableState, { TableState } from '@/hooks/useTableState.hook';
 import { ColumnDef } from '@tanstack/react-table';
-import { PencilIcon, TrashIcon } from 'lucide-react';
-import { useContext, useEffect, useState } from 'react';
+import { ImageIcon, PencilIcon } from 'lucide-react';
+import { useContext, useEffect } from 'react';
 import DateCell from '../date.cell';
-import MenuActionTag from '../tag/action-menu.table';
 import UserCell from '../user.cell';
+import MenuActionPost from './action-menu.table';
 
-export interface CategoryTableState extends TableState {
-  data: CategoryFindItemType[];
+export interface PostTableState extends TableState {
+  data: PostAdminFindItemType[];
   name: string;
+  categoryIds: string[];
+  tagIds: string[];
 }
 
-export type ActionMenuCategoryItemType = { trigger: React.FC<{ data: CategoryFindItemType }> };
+export type ActionMenuPostItemType = { trigger: React.FC<{ data: PostAdminFindItemType }> };
 
-export default function CategoryTable() {
+export default function PostTable() {
   const { reload, SetReloadTable } = useContext<TableContextType>(TableContext);
-  const { get, post } = useRequest();
-  const { state, SetTableState } = useTableState<CategoryTableState>({
+  const { post } = useRequest();
+  const { state, SetTableState } = useTableState<PostTableState>({
     data: [],
     fetching: true,
     page: 1,
     size: 10,
     total: 0,
     name: '',
+    categoryIds: [],
+    tagIds: [],
   });
   const { SetListen, listen, debounced } = useDebounce<string>({ initValue: state.name, delay: 500 });
   const { toast } = useToast();
-  const [deleteMany, SetDeleteMany] = useState<string[]>([]);
 
   const onSuccess = () => {
     SetReloadTable(true);
   };
 
-  const ActionMenuItems: ActionMenuCategoryItemType[] = [
+  const ActionMenuItems: ActionMenuPostItemType[] = [
     {
-      trigger: ({ data }: { data: TagFindItemType }) => {
+      trigger: ({ data }: { data: PostAdminFindItemType }) => {
         return (
-          <DialogUpdatecategory
+          <DialogUpdatePost
             onSuccess={onSuccess}
-            category={data}
+            post={data}
             trigger={
               <Button className='w-full h-fit justify-start p-[5px]' variant='ghost'>
                 <PencilIcon className='w-3 h-3 mr-2' /> Edit
@@ -68,56 +68,31 @@ export default function CategoryTable() {
       },
     },
     {
-      trigger: ({ data }: { data: TagFindItemType }) => {
+      trigger: ({ data }: { data: PostAdminFindItemType }) => {
         return (
-          <DialogDeleteCategory
-            onSuccess={() => {
-              if ((state.total - 1) % state.size === 0 && state.page > 1) {
-                SetTableState({
-                  page: state.page - 1,
-                });
-              }
-              SetReloadTable(true);
-            }}
-            category={data}
-            trigger={
-              <Button className='w-full h-fit justify-start p-[5px]' variant={'destructive'}>
-                <TrashIcon className='w-3 h-3 mr-2' /> Delete
-              </Button>
-            }
-          />
+          // <DialogDeleteCategory
+          //   onSuccess={() => {
+          //     if ((state.total - 1) % state.size === 0 && state.page > 1) {
+          //       SetTableState({
+          //         page: state.page - 1,
+          //       });
+          //     }
+          //     SetReloadTable(true);
+          //   }}
+          //   category={data}
+          //   trigger={
+          //     <Button className='w-full h-fit justify-start p-[5px]' variant={'destructive'}>
+          //       <TrashIcon className='w-3 h-3 mr-2' /> Delete
+          //     </Button>
+          //   }
+          // />
+          <></>
         );
       },
     },
   ];
 
-  const columns: ColumnDef<CategoryFindItemType>[] = [
-    {
-      id: 'select',
-      header: ({ table }) => (
-        <Checkbox
-          checked={deleteMany.length === state.data.length}
-          onCheckedChange={value => {
-            SetDeleteMany(value ? state.data.map(data => data.id) : []);
-          }}
-          aria-label='Select all'
-          className='rounded-md'
-        />
-      ),
-      cell: ({ row }) => (
-        <Checkbox
-          checked={deleteMany.includes(row.original.id)}
-          onCheckedChange={value => {
-            const rowData: TagFindItemType = row.original;
-            SetDeleteMany(prev => (value ? [...prev, rowData.id] : prev.filter(pr => pr !== rowData.id)));
-          }}
-          aria-label='Select row'
-          className='rounded-md'
-        />
-      ),
-      enableSorting: false,
-      enableHiding: false,
-    },
+  const columns: ColumnDef<PostAdminFindItemType>[] = [
     {
       header: 'No.',
       cell: ({ row }) => {
@@ -125,31 +100,51 @@ export default function CategoryTable() {
       },
     },
     {
-      accessorKey: 'name',
-      header: 'Name',
+      header: 'Thumbnail',
+      accessorKey: 'thumbnail',
+      cell: ({ row }) => {
+        return (
+          <div className=' aspect-video h-[50px] w-auto rounded-lg overflow-hidden flex items-center justify-center bg-accent border'>
+            {row.original.thumbnail ? (
+              <img src={`${REQUEST_URL}/${row.original.thumbnail}`} alt='post' className='w-full h-full object-cover' />
+            ) : (
+              <ImageIcon className='w-5 h-5 text-muted-foreground' />
+            )}
+          </div>
+        );
+      },
     },
     {
-      accessorKey: 'userCreate',
+      accessorKey: 'title',
+      header: 'Title',
+      cell: ({ row }) => {
+        return <p className='w-fit max-w-36 overflow-hidden line-clamp-2 text-ellipsis'>{row.original.title}</p>;
+      },
+    },
+    {
+      accessorKey: 'content',
+      header: 'Content',
+      cell: ({ row }) => {
+        return <p className='w-fit max-w-56 overflow-hidden line-clamp-2 text-ellipsis'>{row.original.content}</p>;
+      },
+    },
+    {
+      accessorKey: 'user',
       header: 'Created By',
-      cell: UserCell<TagFindItemType>({ type: ModifierRecordEnum.CREATE }),
+      cell: UserCell<PostAdminFindItemType>({ type: ModifierRecordEnum.USER }),
     },
     {
       accessorKey: 'createAt',
       header: 'Created At',
-      cell: DateCell<TagFindItemType>({
+      cell: DateCell<PostAdminFindItemType>({
         type: DateModifyRecordEnum.CREATE,
         format: `${DateFormat} ${SeparateSecondary} ${Time12Format}` as DateFormatType,
       }),
     },
     {
-      accessorKey: 'userUpdate',
-      header: 'Update By',
-      cell: UserCell<TagFindItemType>({ type: ModifierRecordEnum.UPDATE }),
-    },
-    {
       accessorKey: 'updateAt',
       header: 'Update At',
-      cell: DateCell<TagFindItemType>({
+      cell: DateCell<PostAdminFindItemType>({
         type: DateModifyRecordEnum.UPDATE,
         format: `${DateFormat} ${SeparateSecondary} ${Time12Format}` as DateFormatType,
       }),
@@ -158,23 +153,28 @@ export default function CategoryTable() {
       id: 'actions',
       header: 'Actions',
       enableHiding: false,
-      cell: MenuActionTag({
+      cell: MenuActionPost({
         actionItems: ActionMenuItems,
       }),
     },
   ];
 
-  const getCategoryList = async () => {
+  const getPostList = async () => {
     SetTableState({
       fetching: true,
     });
-    const res = await get<FindTagResult>({
-      path: REQUEST_PATH.category.find(),
-      query: [
-        { key: 'page', value: state.page },
-        { key: 'size', value: state.size },
-        { key: 'name', value: state.name },
-      ],
+    const res = await post<PostAdminFindResult>({
+      path: REQUEST_PATH.post.findByCategory(),
+      body: {
+        page: state.page,
+        size: state.size,
+        query: state.name,
+        idsCategory: [],
+        idsTag: [],
+      },
+      headers: {
+        'Content-Type': 'application/json',
+      },
       token: true,
     });
 
@@ -188,30 +188,8 @@ export default function CategoryTable() {
     SetReloadTable(false);
   };
 
-  const deleteMutiple = async () => {
-    const res = await post({
-      path: REQUEST_PATH.category.deleteMutiple(),
-      token: true,
-      body: {
-        categoryIds: deleteMany,
-      },
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    });
-
-    if (res) {
-      toast({
-        title: 'Deleted Categories',
-        description: `Deleted ${deleteMany.length} record on Category table`,
-      });
-      SetDeleteMany([]);
-      getCategoryList();
-    }
-  };
-
   useEffect(() => {
-    reload && getCategoryList();
+    reload && getPostList();
   }, [state.page, state.name, reload]);
 
   useEffect(() => {
@@ -220,21 +198,14 @@ export default function CategoryTable() {
   }, [debounced]);
 
   return (
-    <CardComponent title='Category Lists' description='Manage and view your category.'>
+    <CardComponent title='Post Lists' description='Manage, update user posts.'>
       <CardContent>
         {state.fetching && <FetchingData />}
 
         <div>
           <div className='flex items-center pb-4 gap-3'>
-            {deleteMany.length ? (
-              <Button variant={'destructive'} onClick={() => deleteMutiple()}>
-                <TrashIcon className='w-3 h-3 mr-2' /> Delete {deleteMany.length} record
-              </Button>
-            ) : (
-              <></>
-            )}
             <Input
-              placeholder='Find by tag name...'
+              placeholder='Find by title or content ...'
               value={listen}
               onChange={event => {
                 SetListen(event.target.value);
@@ -282,7 +253,7 @@ export default function CategoryTable() {
           <strong>
             {(state.page - 1) * state.size + 1}-{state.page * state.size}
           </strong>{' '}
-          of <strong>{state.total}</strong> categories
+          of <strong>{state.total}</strong> posts
         </div>
       </CardFooter>
     </CardComponent>

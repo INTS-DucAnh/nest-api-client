@@ -83,6 +83,10 @@ module.exports = {
           "75%": { opacity: "1" },
           to: { opacity: "0" },
         },
+        "infinity-horizon-scroll": {
+          from: { transform: "translateX(0)" },
+          to: { transform: "translateX(calc(0px - 50%))" },
+        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
@@ -91,6 +95,8 @@ module.exports = {
         "appear-right": "appear-right 0.1s ease-out",
         "appear-left": "appear-left 0.1s ease-out",
         cursor: "cursor 1s ease-in infinite",
+        "infinity-horizon-scroll":
+          "infinity-horizon-scroll 20s linear infinite",
       },
     },
   },

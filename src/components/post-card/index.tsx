@@ -2,20 +2,31 @@ import { DateFormat, SeparateSecondary, Time24Format } from '@/common/constant/d
 import { DateFormatType } from '@/common/type/date.type';
 import { PostFindItemType } from '@/common/type/post.type';
 import FormatDate from '@/lib/date-format.lb';
+import { HoverCardContent, HoverCardTrigger } from '@radix-ui/react-hover-card';
+import { HeartIcon, MessageCircleMoreIcon } from 'lucide-react';
+import { Button } from '../ui/button';
 import { Card } from '../ui/card';
+import { HoverCard } from '../ui/hover-card';
 import UserInfo from '../user-info/user-info';
 
 export default function PostCard({ post }: { post: PostFindItemType }) {
   return (
-    <div className=' rounded-xl w-full p-0 hover:border-gray-500 h-fit max-h-80 cursor-pointer'>
-      <div className='p-4 height w-full h-fit max-h-80'>
-        <div className='w-full h-fit py-2 flex items-center justify-between'>
-          <div>
-            {post.user && (
-              <UserInfo user={post.user}>
-                <p className='text-xs'>{post.user.avatar}</p>
-              </UserInfo>
-            )}
+    <div className=' rounded-xl w-full p-0 hover:border-gray-500 h-fit cursor-pointer'>
+      <div className='p-4 height w-full h-fit'>
+        <div className='w-full h-fit pb-2 text-left'>
+          <div className='w-full'>
+            <HoverCard>
+              <HoverCardTrigger>
+                <p className='text-white text-sm hover:underline w-full text-ellipsis overflow-hidden'>@{post.user.name}</p>
+              </HoverCardTrigger>
+              <HoverCardContent side='top' align='start'>
+                <Card className='p-3'>
+                  <UserInfo user={post.user}>
+                    <p className='text-xs'>{post.user.email}</p>
+                  </UserInfo>
+                </Card>
+              </HoverCardContent>
+            </HoverCard>
           </div>
           <p className='text-[0.7rem] text-muted-foreground w-full text-left'>
             Update: {FormatDate({ time: post.updatedDate, format: `${DateFormat} ${SeparateSecondary} ${Time24Format}` as DateFormatType })}
@@ -35,6 +46,14 @@ export default function PostCard({ post }: { post: PostFindItemType }) {
               />
             </div>
           </Card>
+          <div className='flex overflow-hidden mt-5 w-fit gap-1'>
+            <Button variant={'ghost'} size={'sm'}>
+              <HeartIcon className={`${post.isLike ? 'fill-primary text-primary' : 'text-muted-foregro'} w-4 h-4 mr-1`} /> {post.likes}
+            </Button>
+            <Button variant={'ghost'} size={'sm'}>
+              <MessageCircleMoreIcon className={`w-4 h-4 mr-1`} /> {post.comments}
+            </Button>
+          </div>
         </div>
       </div>
     </div>

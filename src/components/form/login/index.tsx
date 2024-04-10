@@ -16,7 +16,7 @@ import { useForm } from 'react-hook-form';
 import { Link } from 'react-router-dom';
 import * as z from 'zod';
 
-export default function LoginForm({onSuccess}: {onSuccess?: () => void }) {
+export default function LoginForm({ onSuccess }: { onSuccess?: () => void }) {
   const { post } = useRequest();
   const { toast } = useToast();
   const { SetToken } = useAccessToken();
@@ -43,7 +43,7 @@ export default function LoginForm({onSuccess}: {onSuccess?: () => void }) {
         description: 'Login successfully',
       });
 
-      if(onSuccess) onSuccess();
+      if (onSuccess) onSuccess();
 
       userContext.set(res.result.accessToken);
       SetToken(res.result.accessToken);
@@ -52,47 +52,43 @@ export default function LoginForm({onSuccess}: {onSuccess?: () => void }) {
   return (
     <Form {...form}>
       <Separator />
-      <form onSubmit={form.handleSubmit(onSubmit)} className="mt-5">
-        <div className="flex flex-col gap-3 text-left">
+      <form onSubmit={form.handleSubmit(onSubmit)}>
+        <div className='flex flex-col gap-3 text-left'>
           <FormField
             control={form.control}
-            name="email"
+            name='email'
             render={({ field }) => (
-              <RenderFormItem label="Email">
-                <Input placeholder="Your email" {...field} />
+              <RenderFormItem label='Email'>
+                <Input placeholder='Your email' {...field} />
               </RenderFormItem>
             )}
           />
           <FormField
             control={form.control}
-            name="password"
-            render={({ field }) => (<>
-              <RenderFormItem label="Password">
-                <Input
-                  placeholder="Your account password"
-                  type="password"
-                  {...field}
-                />
-              </RenderFormItem>
-              <p className="text-xs w-full text-right">
-                  <Link
-                    to={'/forgot-password'}
-                    className="text-primary hover:underline">
+            name='password'
+            render={({ field }) => (
+              <>
+                <RenderFormItem label='Password'>
+                  <Input placeholder='Your account password' type='password' {...field} />
+                </RenderFormItem>
+                <p className='text-xs w-full text-right'>
+                  <Link to={'/forgot-password'} className='text-primary hover:underline'>
                     Forgot password?
                   </Link>
                 </p>
-            </>)}
+              </>
+            )}
           />
         </div>
 
-        <Button type="submit" className="w-full mt-5">
+        <Button type='submit' className='w-full mt-5'>
           Login
         </Button>
 
-        <Separator className="mt-3 mb-3" />
-        <p className="text-sm w-full text-center m-0">
+        <Separator className='mt-3 mb-3' />
+        <p className='text-sm w-full text-center m-0'>
           Don't have an account?{' '}
-          <Link to={'/signup'} className="text-primary hover:underline">
+          <Link to={'/signup'} className='text-primary hover:underline'>
             Create an account
           </Link>
         </p>

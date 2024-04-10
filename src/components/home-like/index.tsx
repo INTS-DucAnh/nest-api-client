@@ -15,13 +15,13 @@ export default function HomeMostLike() {
   const getMostLike = async () => {
     SetLoading(true);
     const res = await get<MostLikeResult>({
-      token: true,
+      token: false,
       path: REQUEST_PATH.post.mostLike(),
     });
 
     SetLoading(false);
     if (res) {
-      SetMostLike([...res.result, ...res.result, ...res.result, ...res.result, ...res.result]);
+      SetMostLike(res.result);
     }
   };
 
@@ -30,7 +30,7 @@ export default function HomeMostLike() {
   }, []);
 
   return (
-    <div className='w-full py-20 px-[15%] max-xl:px-[5%] h-fit'>
+    <div className='w-full py-20 px-[15%] max-xl:px-[5%] h-fit' id='home_mostlike'>
       <div className='w-full h-fit flex justify-between items-start'>
         <div className='w-fit h-fit'>
           <h1 className='text-[3rem] font-bold w-[200px] h-fit relative text-left leading-[50px]'>Trending Posts</h1>
@@ -43,11 +43,11 @@ export default function HomeMostLike() {
       <div className='w-full grid grid-cols-5 grid-rows-1 gap-8 max-2xl:gap-2 mt-5'>
         {mostLike.length ? (
           mostLike.map((post: PostFindItemType) => (
-            <div key={post.id} className=' odd:duration-75 odd:mt-[35px] even:mb-[35px] odd:hover:mt-[25px]'>
+            <div key={post.id} className=' odd:duration-75 odd:mt-[35px] even:mb-[35px]'>
               <DialogPostDetail
                 id={post.id}
                 trigger={
-                  <Button variant={'outline'} className='w-full h-full p-0 rounded-lg'>
+                  <Button variant={'outline'} className=' duration-100 w-full h-full p-0 rounded-xl hover:bg-background hover:shadow-xl'>
                     <PostCard post={post} />
                   </Button>
                 }

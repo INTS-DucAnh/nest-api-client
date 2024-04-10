@@ -3,6 +3,7 @@ import LoginRoute from '@/routes/auth/login/login';
 import SignupRoute from '@/routes/auth/signup/signup';
 import DashboardRoute from '@/routes/private/_';
 import CategoryRoute from '@/routes/private/category';
+import PostRoute from '@/routes/private/post';
 import TagRoute from '@/routes/private/tag';
 import HomeRoute from '@/routes/public/home';
 import { Route, Routes } from 'react-router-dom';
@@ -17,7 +18,7 @@ export default function AppRouter() {
         <Route path='admin'>
           <Route path='' element={<DashboardRoute />} />
           <Route path='users' element={<p>This is User Page</p>} />
-          <Route path='posts' element={<p>This is Post Page</p>} />
+          <Route path='posts' element={<PostRoute />} />
           <Route path='tags' element={<TagRoute />} />
           <Route path='categories' element={<CategoryRoute />} />
 
