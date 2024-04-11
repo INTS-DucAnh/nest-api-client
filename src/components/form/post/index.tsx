@@ -143,7 +143,7 @@ export default function PostForm({
               name='thumbnail'
               render={({ field }) => {
                 return (
-                  <RenderFormItem label='Thumbnail'>
+                  <RenderFormItem label='Thumbnail' require>
                     <div className='w-fit'>
                       <div className='w-60 aspect-video rounded-xl overflow-hidden border grid place-items-center relative'>
                         {tempThumbnail ? (

@@ -4,6 +4,7 @@ import { DateModifyRecordEnum, ModifierRecordEnum } from '@/common/enum/table.en
 import { DateFormatType } from '@/common/type/date.type';
 import { PostAdminFindItemType } from '@/common/type/post.type';
 import { PostAdminFindResult } from '@/common/type/result.type';
+import DialogDeletePost from '@/components/dialog/dialog-post/delete';
 import DialogUpdatePost from '@/components/dialog/dialog-post/update';
 import FetchingData from '@/components/loading/fetching';
 import { Button } from '@/components/ui/button';
@@ -16,7 +17,7 @@ import useDebounce from '@/hooks/useDebounce.hook';
 import useRequest from '@/hooks/useRequestApi.hook';
 import useTableState, { TableState } from '@/hooks/useTableState.hook';
 import { ColumnDef } from '@tanstack/react-table';
-import { ImageIcon, PencilIcon } from 'lucide-react';
+import { ImageIcon, PencilIcon, TrashIcon } from 'lucide-react';
 import { useContext, useEffect } from 'react';
 import DateCell from '../date.cell';
 import UserCell from '../user.cell';
@@ -70,23 +71,22 @@ export default function PostTable() {
     {
       trigger: ({ data }: { data: PostAdminFindItemType }) => {
         return (
-          // <DialogDeleteCategory
-          //   onSuccess={() => {
-          //     if ((state.total - 1) % state.size === 0 && state.page > 1) {
-          //       SetTableState({
-          //         page: state.page - 1,
-          //       });
-          //     }
-          //     SetReloadTable(true);
-          //   }}
-          //   category={data}
-          //   trigger={
-          //     <Button className='w-full h-fit justify-start p-[5px]' variant={'destructive'}>
-          //       <TrashIcon className='w-3 h-3 mr-2' /> Delete
-          //     </Button>
-          //   }
-          // />
-          <></>
+          <DialogDeletePost
+            onSuccess={() => {
+              if ((state.total - 1) % state.size === 0 && state.page > 1) {
+                SetTableState({
+                  page: state.page - 1,
+                });
+              }
+              SetReloadTable(true);
+            }}
+            post={data}
+            trigger={
+              <Button className='w-full h-fit justify-start p-[5px]' variant={'destructive'}>
+                <TrashIcon className='w-3 h-3 mr-2' /> Delete
+              </Button>
+            }
+          />
         );
       },
     },
