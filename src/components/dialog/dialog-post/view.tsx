@@ -3,6 +3,7 @@ import { PostDetailType } from '@/common/type/post.type';
 import PostDetail from '@/components/post-detail';
 import { ReactNode, useEffect, useState } from 'react';
 import DialogComponent from '..';
+import DialogComponentDetail from '@/components/dialog-detail';
 
 export default function DialogPostDetail({ id, trigger }: { id: string; trigger: ReactNode }) {
   const [post, SetPost] = useState<PostDetailType>();
@@ -31,6 +32,6 @@ export default function DialogPostDetail({ id, trigger }: { id: string; trigger:
   return (
     <DialogComponent title='Post Detail' trigger={trigger}>
       {post && <PostDetail post={post} />}
-    </DialogComponent>
+    </DialogComponentDetail>
   );
 }
