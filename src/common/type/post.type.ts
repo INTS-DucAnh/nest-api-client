@@ -1,5 +1,5 @@
 import { FindBaseType } from './find.type';
-import { RecordBase } from './table.type';
+import { RecordBase, RecordModifier } from './table.type';
 import { UserModifyBase } from './user.type';
 
 export type PostType = {
@@ -16,9 +16,23 @@ export type PostEditType = {
 
 export type PostFindItemType = RecordBase &
   PostType & {
-    like: number;
+    comments: number;
+    likes: number;
     isLike?: boolean;
     user: ModifierPostType;
+  };
+
+export type PostAdminFindItemType = RecordModifier &
+  RecordBase &
+  PostType & {
+    tag: {
+      count: number;
+      data: Array<{ id: string; name: string }>;
+    };
+    category: {
+      count: number;
+      data: Array<{ id: string; name: string }>;
+    };
   };
 
 export type PostModifier = {
@@ -44,6 +58,7 @@ export type PostComment1Type = PostCommentBaseType & {
 export type PostComment2Type = PostComment3Type & {
   replyToReply: PostComment3Type[];
 };
+
 export type PostComment3Type = PostCommentBaseType & {
   replyToUser: ModifierPostType;
 };
@@ -55,4 +70,8 @@ export type PostFindType = FindBaseType & {
 export type ModifierPostType = UserModifyBase & {
   email: string;
   birthDay: string; // YYYY-MM-DD
+};
+
+export type PostFindAdminType = FindBaseType & {
+  data: PostAdminFindItemType[];
 };

@@ -17,3 +17,8 @@ export type TagFindItemType = RecordModifier &
 export type TagFindType = FindBaseType & {
   data: TagFindItemType[];
 };
+
+export type SelectMutipleTagItem = {
+  id: string;
+  name: string;
+};

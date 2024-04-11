@@ -12,20 +12,16 @@ export default function ThemeSwitcher() {
         <Button
           variant={'outline'}
           size={'icon'}
+          className='z-[2]'
           onClick={() => {
-            changeTheme(
-              theme === ThemeEnum.DARK ? ThemeEnum.LIGHT : ThemeEnum.DARK,
-            );
-          }}>
-          {theme === ThemeEnum.DARK ? (
-            <MoonIcon className="h-4 w-4" />
-          ) : (
-            <SunIcon className="h-4 w-4" />
-          )}
+            changeTheme(theme === ThemeEnum.DARK ? ThemeEnum.LIGHT : ThemeEnum.DARK);
+          }}
+        >
+          {theme === ThemeEnum.DARK ? <MoonIcon className='h-4 w-4' /> : <SunIcon className='h-4 w-4' />}
         </Button>
       }
-      text="Switch Theme"
-      side="right"
+      text='Switch Theme'
+      side='right'
       dur={200}
     />
   );

@@ -15,7 +15,7 @@ export default function PublicNavigation() {
   useNavigator();
 
   return (
-    <Card className='flex flex-row justify-between items-center box-border px-72 py-3 bg-background w-full rounded-none'>
+    <Card className='flex flex-row justify-between items-center box-border py-20 px-[15%] max-xl:px-[5%] py-3 bg-background w-full rounded-none z-[2]'>
       <div className='flex gap-10 items-center flex-1'>
         <Button variant='ghost'>
           <Link to={'/'} className='font-black text-lg text-primary '>

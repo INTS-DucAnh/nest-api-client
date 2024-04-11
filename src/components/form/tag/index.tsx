@@ -69,7 +69,7 @@ export default function TagForm({ tag, onSuccess }: { tag?: TagFindItemType; onS
   return (
     <Form {...form}>
       <Separator />
-      <form onSubmit={form.handleSubmit(onSubmit)} className='mt-5'>
+      <form onSubmit={form.handleSubmit(onSubmit)}>
         <div className='flex flex-col gap-3'>
           <FormField
             control={form.control}

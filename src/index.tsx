@@ -3,20 +3,18 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { BrowserRouter } from 'react-router-dom';
 import App from './App';
+import NavigateProvider from './contexts/navigate.context';
 import ThemeProvider from './contexts/theme.context';
 import './index.css';
 import reportWebVitals from './reportWebVitals';
-import NavigateProvider from './contexts/navigate.context';
 
-const root = ReactDOM.createRoot(
-  document.getElementById('root') as HTMLElement,
-);
+const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
 root.render(
   <React.StrictMode>
     <BrowserRouter>
       <ThemeProvider>
         <NavigateProvider>
-            <App />
+          <App />
         </NavigateProvider>
       </ThemeProvider>
     </BrowserRouter>

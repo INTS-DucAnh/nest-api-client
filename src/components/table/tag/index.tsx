@@ -12,16 +12,17 @@ import CardComponent, { CardContent, CardFooter } from '@/components/ui/card';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Input } from '@/components/ui/input';
 import { DataTable } from '@/components/ui/table';
+import { useToast } from '@/components/ui/use-toast';
 import { TableContext, TableContextType } from '@/contexts/table.context';
 import useDebounce from '@/hooks/useDebounce.hook';
 import useRequest from '@/hooks/useRequestApi.hook';
 import useTableState, { TableState } from '@/hooks/useTableState.hook';
 import { ColumnDef } from '@tanstack/react-table';
 import { PencilIcon, TrashIcon } from 'lucide-react';
-import { useContext, useEffect } from 'react';
-import MenuActionTag from '../action-menu.table';
+import { useContext, useEffect, useState } from 'react';
 import DateCell from '../date.cell';
 import UserCell from '../user.cell';
+import MenuActionTag from './action-menu.table';
 
 export interface TagTableState extends TableState {
   data: TagFindItemType[];
@@ -32,7 +33,8 @@ export type ActionMenuTagItemType = { trigger: React.FC<{ data: TagFindItemType 
 
 export default function TagTable() {
   const { reload, SetReloadTable } = useContext<TableContextType>(TableContext);
-  const { get } = useRequest();
+  const { get, post } = useRequest();
+  const [deleteMany, SetDeleteMany] = useState<string[]>([]);
   const { state, SetTableState } = useTableState<TagTableState>({
     data: [],
     fetching: true,
@@ -42,6 +44,7 @@ export default function TagTable() {
     name: '',
   });
   const { SetListen, listen, debounced } = useDebounce<string>({ initValue: state.name, delay: 500 });
+  const { toast } = useToast();
 
   const onSuccess = () => {
     SetReloadTable(true);
@@ -92,20 +95,27 @@ export default function TagTable() {
       id: 'select',
       header: ({ table }) => (
         <Checkbox
-          checked={table.getIsAllPageRowsSelected() || (table.getIsSomePageRowsSelected() && 'indeterminate')}
-          onCheckedChange={value => table.toggleAllPageRowsSelected(!!value)}
+          checked={deleteMany.length === state.data.length}
+          onCheckedChange={value => {
+            SetDeleteMany(value ? state.data.map(data => data.id) : []);
+          }}
           aria-label='Select all'
           className='rounded-md'
         />
       ),
-      cell: ({ row }) => (
-        <Checkbox
-          checked={row.getIsSelected()}
-          onCheckedChange={value => row.toggleSelected(!!value)}
-          aria-label='Select row'
-          className='rounded-md'
-        />
-      ),
+      cell: ({ row }) => {
+        return (
+          <Checkbox
+            checked={deleteMany.includes(row.original.id)}
+            onCheckedChange={value => {
+              const rowData: TagFindItemType = row.original;
+              SetDeleteMany(prev => (value ? [...prev, rowData.id] : prev.filter(pr => pr !== rowData.id)));
+            }}
+            aria-label='Select row'
+            className='rounded-md'
+          />
+        );
+      },
       enableSorting: false,
       enableHiding: false,
     },
@@ -175,7 +185,29 @@ export default function TagTable() {
         total: res.result.total,
         fetching: false,
       });
-      SetReloadTable(false);
+    }
+    SetReloadTable(false);
+  };
+
+  const deleteMutiple = async () => {
+    const res = await post({
+      path: REQUEST_PATH.tag.deleteMutiple(),
+      token: true,
+      body: {
+        tagIds: deleteMany,
+      },
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+
+    if (res) {
+      toast({
+        title: 'Deleted Tags',
+        description: `Deleted ${deleteMany.length} record on Tag table`,
+      });
+      SetDeleteMany([]);
+      getTagList();
     }
   };
 
@@ -194,12 +226,21 @@ export default function TagTable() {
         {state.fetching && <FetchingData />}
 
         <div>
-          <div className='flex items-center pb-4'>
+          <div className='flex items-center pb-4 gap-3'>
+            {deleteMany.length ? (
+              <Button variant={'destructive'} onClick={() => deleteMutiple()}>
+                <TrashIcon className='w-3 h-3 mr-2' /> Delete {deleteMany.length} record
+              </Button>
+            ) : (
+              <></>
+            )}
             <Input
               placeholder='Find by tag name...'
               value={listen}
               onChange={event => {
                 SetListen(event.target.value);
+                SetTableState({ page: 1 });
+                SetDeleteMany([]);
               }}
               className='max-w-sm'
             />

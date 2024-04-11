@@ -7,6 +7,7 @@ export type RecordBase = {
 };
 
 export type RecordModifier = {
-  userCreate: UserModifyBase;
-  userUpdate: UserModifyBase;
+  userCreate?: UserModifyBase;
+  userUpdate?: UserModifyBase;
+  user?: UserModifyBase;
 };

@@ -15,13 +15,12 @@ export default function DialogComponent({
   return (
     <Dialog>
       <DialogTrigger asChild>{trigger}</DialogTrigger>
-      <DialogContent className=''>
-        {/* <DialogContent className="sm:max-w-md"> */}
+      <DialogContent className='sm:max-w-md'>
         <DialogHeader>
           <DialogTitle className='font-bold tracking-tight text-2xl'>{title}</DialogTitle>
           <DialogDescription className='text-sm text-muted-foreground'>{description}</DialogDescription>
-          {children}
         </DialogHeader>
+        {children}
       </DialogContent>
     </Dialog>
   );

@@ -4,12 +4,11 @@ export const FAKE_POST: PostDetailType = {
   id: 'e3d7fa10-664b-4ed5-a131-6e0e2e5c1061',
   createdDate: new Date('2024-04-05T10:08:13.000Z'),
   updatedDate: new Date('2024-04-05T10:08:16.000Z'),
-  content:
-    'A checklist for backend code reviews covering code style, maintainability, requirements, API design, documentation, error handling, security, dependencies, logging, testing, performance, version control, and spelling.',
-  title: 'Backend Code Review Checklist',
-  thumbnail: 'https://res.cloudinary.com/daily-now/image/upload/f_auto,q_auto/v1/posts/ea36e7fe1b573018c9f509b486935b9f?_a=AQAEufR',
-  like: 100,
-  isLike: false,
+  content: 'Test1',
+  title: 'Test1',
+  thumbnail: null,
+  comments: 10,
+  likes: 100,
   user: {
     id: 'e3d7fa10-664b-4ed5-a131-6e0e2e5c1060',
     name: 'ADMIN',
