@@ -4,6 +4,7 @@ import PostDetail from '@/components/post-detail';
 import { Button } from '@/components/ui/button';
 import { useEffect, useState } from 'react';
 import DialogComponent from '..';
+import DialogComponentDetail from '@/components/dialog-detail';
 
 export default function DialogPostDetail({ id }: { id: string }) {
   const [post, SetPost] = useState<PostDetailType>();
@@ -30,8 +31,8 @@ export default function DialogPostDetail({ id }: { id: string }) {
   }, []);
 
   return (
-    <DialogComponent title='Post Detail' trigger={<Button>View Detail</Button>}>
+    <DialogComponentDetail title='' trigger={<Button>View Detail</Button>}>
       {post && <PostDetail post={post} />}
-    </DialogComponent>
+    </DialogComponentDetail>
   );
 }

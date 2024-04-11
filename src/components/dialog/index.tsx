@@ -1,12 +1,5 @@
 import { ReactNode } from 'react';
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from '../ui/dialog';
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '../ui/dialog';
 
 export default function DialogComponent({
   trigger,
@@ -22,14 +15,11 @@ export default function DialogComponent({
   return (
     <Dialog>
       <DialogTrigger asChild>{trigger}</DialogTrigger>
-      <DialogContent className="sm:max-w-md">
+      <DialogContent className=''>
+        {/* <DialogContent className="sm:max-w-md"> */}
         <DialogHeader>
-          <DialogTitle className="font-bold tracking-tight text-2xl">
-            {title}
-          </DialogTitle>
-          <DialogDescription className="text-sm text-muted-foreground">
-            {description}
-          </DialogDescription>
+          <DialogTitle className='font-bold tracking-tight text-2xl'>{title}</DialogTitle>
+          <DialogDescription className='text-sm text-muted-foreground'>{description}</DialogDescription>
           {children}
         </DialogHeader>
       </DialogContent>
